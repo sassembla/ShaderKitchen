@@ -13,8 +13,6 @@
 		_Out("Out-RefRatio",range(0,1)) = 0.87//入射率　0.87は水　つまり空気から水に光が入った時の数字をデフォルトにしています
 		_FresnelPow("FresnelPow",Range(0.01,5)) = 5//デフォルト5 近似値から離れるのであまりいじりません。
 		_ScrollVec("Anime normal-x,y/water-x,y",vector) = (1.0,1.0,1.0,1.0)
-//        _XScrollSpeed ( "X Scroll Speed", float ) = 1
-//        _YScrollSpeed ( "Y Scroll Speed", float ) = 1
      }
  
      SubShader 
@@ -68,9 +66,7 @@
 			
 			//Animation
 			float4 _ScrollVec;
-//			float _XScrollSpeed;
-//     		float _YScrollSpeed;
-//			
+		
 			float4 _LightColor0;// color of light source (from Lighting.cginc)
 			
 			float3 FindNormal(sampler2D tex, float2 uv, float u,float3 norm) // decoord Hightmap
@@ -134,6 +130,7 @@
 				o.viewDir = normalize(ObjSpaceViewDir(v.vertex));
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+				
 				return o;
 			}
 			
@@ -149,8 +146,7 @@
 				ScrollUV1.y += _ScrollVec.w * timeDat;
 			
 				//float3 encordedNormal = FindNormal(_MainTex,_MainTex_ST.xy * i.uv.xy + _MainTex_ST.zw,_Pow,i.NormalW);
-				float3 encordedNormal = FindNormal(_MainTex,_MainTex_ST.xy * ScrollUV0.xy + _MainTex_ST.zw,_Pow,i.NormalW);
-				
+				float3 encordedNormal = FindNormal(_MainTex,_MainTex_ST.xy * i.uv.xy + _MainTex_ST.zw,_Pow,i.NormalW);
 				float3 localCoords = normalize(2.0 * encordedNormal.rgb - float3(1.0,1.0,1.0));
 				
 				//??
@@ -158,13 +154,13 @@
 				//float3 normalDirection = normalize(mul(localCoords, local2WorldTranspose));
 				
 				float3 normalDirection = localCoords;
-				
 				float3 ViewDirection = i.viewDir;
 				float3 lightDirection = i.Light.rgb;
 				float atten = i.Light.a;
 			
 				//fresnel
 				float2 reflectuv = reflect(-ViewDirection, normalDirection);
+				
 				float fcbias = pow((_In - 1) / (_Out+1),2);
 				float facing = saturate(1.0 - max(dot( normalize(ViewDirection), normalize(normalDirection)), 0.0));
 				float refl2Refr = max(fcbias + (1.0-fcbias) * pow(facing, _FresnelPow), 0);

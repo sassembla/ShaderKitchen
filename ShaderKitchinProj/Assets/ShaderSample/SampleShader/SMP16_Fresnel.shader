@@ -45,8 +45,8 @@
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.viewDir = normalize(ObjSpaceViewDir(v.vertex));
-				//o.uv = mul(UNITY_MATRIX_MV,float4(o.uv,0));
 				o.uv = reflect(-o.viewDir, v.normal);
+				o.uv = mul(UNITY_MATRIX_MV,float4(o.uv,0));
 				o.normal = v.normal;
 
 				return o;
