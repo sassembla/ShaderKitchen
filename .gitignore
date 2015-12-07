@@ -1,0 +1,14 @@
+*.db
+
+*.DS_Store
+UnityVS.*
+UnityVS/
+Library/
+Temp/
+.vs/
+packages/
+packages.config
+*.csproj
+*.unityproj
+*.sln
+*.userprefs
