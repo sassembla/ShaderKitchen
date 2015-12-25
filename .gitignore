@@ -16,3 +16,7 @@ packages.config
 Unity/ShaderKitchenProject/Library/*
 
 Unity/ShaderKitchenProject/ProjectSettings/*
+
+Unity/ShaderKitchenProject/Assets/SublimeSocketAsset/*
+
+Unity/ShaderKitchenProject/Assets/VSCode/*
