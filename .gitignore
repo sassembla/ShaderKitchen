@@ -1,0 +1,8 @@
+
+*.csproj
+
+Unity/ShaderKitchenProject/Library/*
+
+*.sln
+
+Unity/ShaderKitchenProject/ProjectSettings/*
