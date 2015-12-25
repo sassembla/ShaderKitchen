@@ -1,0 +1,44 @@
+[Header]
+ICOfile = "Harbor_3_Free_Thumb.tga"
+Name = "Harbor 3 Free"
+Author = "HDRI Hub"
+Location = "Hamburg, Germany"
+Comment = "harbor, ocean, boats, parking, place, clear, noon"
+PREVIEWfile = "Harbor_3_Free_Prev.tga"
+GEOlat = 53.3516532182693480
+GEOlong = 8.6094503849744797
+Link = "http://www.hdri-hub.com"
+Date = "2010:07:10"
+Time = "13:02:37"
+
+[Background]
+BGfile = "Harbor_3_Free_Bg.jpg"
+BGmap = 1
+BGu = 0.000000
+BGv = 0.000000
+BGheight = 5120
+
+[Enviroment]
+EVfile = "Harbor_3_Free_Env.hdr"
+EVmap = 1
+EVu = 0.000000
+EVv = 0.000000
+EVheight = 256
+EVmulti = 1.087719
+EVgamma = 1.000000
+
+[Reflection]
+REFfile = "Harbor_3_Free_Ref.hdr"
+REFmap = 1
+REFu = 0.000000
+REFv = 0.000000
+REFheight = 2560
+REFmulti = 1.087719
+REFgamma = 1.000000
+
+[Sun]
+SUNcolor = 255,230,228
+SUNmulti = 1.000000
+SUNu = 0.886000
+SUNv = 0.184000
+
