@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEditor;
 
 using System;
@@ -8,14 +7,113 @@ using System.IO;
 using System.Collections.Generic;
 
 namespace ShaderKitchen {
+
+    [Serializable] public class DataStruct {
+		[SerializeField] public bool recording;
+	}
+	
+	[InitializeOnLoad]
 	public class ShaderKitchen {
+		
+		private static DataStruct dataStruct;
+		
+		static ShaderKitchen () {
+			if (!File.Exists(ShaderKitchenSettings.SETTING_FILE_PATH)) return;
+			 
+			using (var sr = new StreamReader(ShaderKitchenSettings.SETTING_FILE_PATH)) {
+				var settingFileString = sr.ReadToEnd();
+				
+				if (string.IsNullOrEmpty(settingFileString)) return;
+				
+				dataStruct = JsonUtility.FromJson<DataStruct>(settingFileString);
+			}
+			
+			if (!dataStruct.recording) return; 
+			
+			EditorApplication.update += Update;
+			 
+		}
+		
 		[MenuItem(ShaderKitchenSettings.GUI_MENU_RECORDING, false, 1)]
 		public static void Recording () {
-			// playして、全フレームのキャプチャを行う。
-			// Updateでの動作をすれば良さげ。本当かな〜　描画でフレーム書いてやってみればいいか。
-			// 同時にMonoBehaviourを作って、Updateで取ればいいと云う感じだ。
-			// まずはPlayを書いて、そこから。
+			Load();
+						
+			dataStruct.recording = true;
+			
+			Save();
+			
+			var screenShotsPath = FileController.PathCombine("Assets", ShaderKitchenSettings.SCREENSHOT_PATH);
+			FileController.RemakeDirectory(screenShotsPath);
+			
+			EditorApplication.isPlaying = true;
 		}
+		
+		
+		private static int frame;
+		
+		private static Texture2D CaptureScreenshot () {
+			var texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
+			texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, true);
+			texture.Apply();
+			return texture;
+		}
+		
+		private static Texture2D[] shots = new Texture2D[ShaderKitchenSettings.MAX_SCREENSHOT_FRAME];
+		
+		private static void Update () {
+			// このタイミングはどうやら描画中になっちゃうらしい、、、面倒だな〜〜
+			// なんかエディタから作り出すようなことにしたほうが良さげ。
+			// あと、吐き出し先をエディタに変更すればRefreshいらないかも。
+			
+			if (ShaderKitchenSettings.MAX_SCREENSHOT_FRAME < frame) return;
+			
+			if (dataStruct.recording) {
+				if (frame == ShaderKitchenSettings.MAX_SCREENSHOT_FRAME) {
+					frame++;
+					foreach (var tex in shots.Select((v,i) => new {i, v})) {
+						var bytes = tex.v.EncodeToPNG();
+						var screenShotsPath = FileController.PathCombine(ShaderKitchenSettings.SCREENSHOT_PATH, tex.i + ShaderKitchenSettings.SCREENSHOT_FILE_EXTENSION);
+						
+						using (var file = File.Open(screenShotsPath, FileMode.Create)) {
+							using (var binaryWriter = new BinaryWriter(file) ) {
+								binaryWriter.Write(bytes);
+							}
+						}
+					}
+					
+					EditorApplication.isPlaying = false;
+					dataStruct.recording = false;
+					Save();
+					
+					AssetDatabase.Refresh();
+					return;
+				}
+				
+				var t = CaptureScreenshot();
+				shots[frame] = t;
+				frame++;
+			}
+		}
+		
+		private static void Load () {
+			var settingFileString = string.Empty;
+			if (File.Exists(ShaderKitchenSettings.SETTING_FILE_PATH)) { 
+				using (var sr = new StreamReader(ShaderKitchenSettings.SETTING_FILE_PATH)) {
+					settingFileString = sr.ReadToEnd();
+					var dataStruct = new DataStruct();
+					if (!string.IsNullOrEmpty(settingFileString)) dataStruct = JsonUtility.FromJson<DataStruct>(settingFileString);
+				}
+			}
+		}
+		
+		private static void Save () {
+			using (var sw = new StreamWriter(ShaderKitchenSettings.SETTING_FILE_PATH)) {
+				var newDataStruct = JsonUtility.ToJson(dataStruct);
+				sw.Write(newDataStruct);
+			}
+		}
+		
+		
 		
 		[MenuItem(ShaderKitchenSettings.GUI_MENU_EXPORTPACKAGE, false, 1)]
 		public static void ExportPackage () {
@@ -26,17 +124,6 @@ namespace ShaderKitchen {
 				"んーーーまず固められればそれでいいな、それをどっかに置いてDLできるようなWebGUIをでっちあげよう。一回転させる。");
 	        AssetDatabase.ExportPackage(filePaths.ToArray(), "ShaderKitchen_0.unitypackage");
 	    }
-	}
-
-	public class ShaderKitchenSettings {
-		
-		public const string GUI_MENU_RECORDING = "ShaderKitchen/Record(test)";
-		
-		public const string GUI_MENU_EXPORTPACKAGE = "ShaderKitchen/Export package(test)";
-		public const bool IGNORE_META = true;
-		public const string UNITY_METAFILE_EXTENSION = ".meta";
-		public const char UNITY_FOLDER_SEPARATOR = '/';
-		public const string DOTSTART_HIDDEN_FILE_HEADSTRING = ".";
 	}
 
 	public class FileController {
