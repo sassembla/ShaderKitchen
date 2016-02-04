@@ -9,6 +9,14 @@ using System.Collections.Generic;
 
 namespace ShaderKitchen {
 	public class ShaderKitchen {
+		[MenuItem(ShaderKitchenSettings.GUI_MENU_RECORDING, false, 1)]
+		public static void Recording () {
+			// playして、全フレームのキャプチャを行う。
+			// Updateでの動作をすれば良さげ。本当かな〜　描画でフレーム書いてやってみればいいか。
+			// 同時にMonoBehaviourを作って、Updateで取ればいいと云う感じだ。
+			// まずはPlayを書いて、そこから。
+		}
+		
 		[MenuItem(ShaderKitchenSettings.GUI_MENU_EXPORTPACKAGE, false, 1)]
 		public static void ExportPackage () {
 			var filePaths = FileController.FilePathsInFolder("Assets/ShaderKitchen");
@@ -21,6 +29,9 @@ namespace ShaderKitchen {
 	}
 
 	public class ShaderKitchenSettings {
+		
+		public const string GUI_MENU_RECORDING = "ShaderKitchen/Record(test)";
+		
 		public const string GUI_MENU_EXPORTPACKAGE = "ShaderKitchen/Export package(test)";
 		public const bool IGNORE_META = true;
 		public const string UNITY_METAFILE_EXTENSION = ".meta";
