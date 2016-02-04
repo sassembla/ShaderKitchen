@@ -42,8 +42,8 @@ namespace ShaderKitchen {
 			
 			Save();
 			
-			var screenShotsPath = FileController.PathCombine("Assets", ShaderKitchenSettings.SCREENSHOT_PATH);
-			FileController.RemakeDirectory(screenShotsPath);
+			// remake screen shot destination folder.
+			FileController.RemakeDirectory(ShaderKitchenSettings.SCREENSHOT_PATH);
 			
 			EditorApplication.isPlaying = true;
 		}
@@ -61,15 +61,12 @@ namespace ShaderKitchen {
 		private static Texture2D[] shots = new Texture2D[ShaderKitchenSettings.MAX_SCREENSHOT_FRAME];
 		
 		private static void Update () {
-			// このタイミングはどうやら描画中になっちゃうらしい、、、面倒だな〜〜
-			// なんかエディタから作り出すようなことにしたほうが良さげ。
-			// あと、吐き出し先をエディタに変更すればRefreshいらないかも。
-			
 			if (ShaderKitchenSettings.MAX_SCREENSHOT_FRAME < frame) return;
 			
 			if (dataStruct.recording) {
 				if (frame == ShaderKitchenSettings.MAX_SCREENSHOT_FRAME) {
 					frame++;
+					
 					foreach (var tex in shots.Select((v,i) => new {i, v})) {
 						var bytes = tex.v.EncodeToPNG();
 						var screenShotsPath = FileController.PathCombine(ShaderKitchenSettings.SCREENSHOT_PATH, tex.i + ShaderKitchenSettings.SCREENSHOT_FILE_EXTENSION);
