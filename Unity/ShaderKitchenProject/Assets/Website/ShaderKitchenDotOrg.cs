@@ -13,18 +13,17 @@ using UnityEngine;
 	ログインとか？ まあ必要ができてから考えよう。
 */
 public class ShaderKitchenDotOrg : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-        Debug.Log("DBどうすっかな〜");
-	}
-    
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
     
+	public void GoToDetail (int index) {
+		Debug.LogError("goto detail:" + index);
+	}
+	
+	
     /**
         なんかIDとかを基準に、packageをDLする。
     */
