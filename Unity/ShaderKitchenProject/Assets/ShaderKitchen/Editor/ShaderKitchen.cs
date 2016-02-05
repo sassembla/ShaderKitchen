@@ -18,6 +18,8 @@ namespace ShaderKitchen {
 		private static DataStruct dataStruct;
 		
 		static ShaderKitchen () {
+			dataStruct = new DataStruct();
+			
 			if (!File.Exists(ShaderKitchenSettings.SETTING_FILE_PATH)) return;
 			 
 			using (var sr = new StreamReader(ShaderKitchenSettings.SETTING_FILE_PATH)) {
