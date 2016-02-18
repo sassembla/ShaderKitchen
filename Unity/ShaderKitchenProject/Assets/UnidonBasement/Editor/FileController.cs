@@ -1,10 +1,21 @@
 using System;
-using System.Linq;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace ShaderKitchen {	
+namespace Unidon {
+	
 	public class FileController {
+		private const char UNITY_FOLDER_SEPARATOR = '/';
+		
+		private const string UNITY_METAFILE_EXTENSION = ".meta";
+		
+		private const string DOTSTART_HIDDEN_FILE_HEADSTRING = ".";
+		
+		private const bool IGNORE_META = true;
+		
+		// private const 
+		
 		public static void RemakeDirectory (string localFolderPath) {
 			if (Directory.Exists(localFolderPath)) Directory.Delete(localFolderPath, true);
 			Directory.CreateDirectory(localFolderPath);
@@ -22,12 +33,12 @@ namespace ShaderKitchen {
 		public static void DeleteFileThenDeleteFolderIfEmpty (string localTargetFilePath) {
 			
 			File.Delete(localTargetFilePath);
-			File.Delete(localTargetFilePath + ShaderKitchenSettings.UNITY_METAFILE_EXTENSION);
+			File.Delete(localTargetFilePath + UNITY_METAFILE_EXTENSION);
 			var directoryPath = Directory.GetParent(localTargetFilePath).FullName;
 			var restFiles = FilePathsInFolder(directoryPath);
 			if (!restFiles.Any()) {
 				Directory.Delete(directoryPath, true);
-				File.Delete(directoryPath + ShaderKitchenSettings.UNITY_METAFILE_EXTENSION);
+				File.Delete(directoryPath + UNITY_METAFILE_EXTENSION);
 			}
 		}
 
@@ -94,16 +105,16 @@ namespace ShaderKitchen {
 		public static List<string> FilePathsInFolderOnly1Level (string localFolderPath) {
 			// change platform-depends folder delimiter -> '/'
 			var filePaths = ConvertSeparater(Directory.GetFiles(localFolderPath)
-					.Where(path => !(Path.GetFileName(path).StartsWith(ShaderKitchenSettings.DOTSTART_HIDDEN_FILE_HEADSTRING)))
+					.Where(path => !(Path.GetFileName(path).StartsWith(DOTSTART_HIDDEN_FILE_HEADSTRING)))
 					.ToList());
 
-			if (ShaderKitchenSettings.IGNORE_META) filePaths = filePaths.Where(path => !IsMetaFile(path)).ToList();
+			if (IGNORE_META) filePaths = filePaths.Where(path => !IsMetaFile(path)).ToList();
 
 			return filePaths;
 		}
 
 		public static List<string> ConvertSeparater (List<string> source) {
-			return source.Select(filePath => filePath.Replace(Path.DirectorySeparatorChar.ToString(), ShaderKitchenSettings.UNITY_FOLDER_SEPARATOR.ToString())).ToList();
+			return source.Select(filePath => filePath.Replace(Path.DirectorySeparatorChar.ToString(), UNITY_FOLDER_SEPARATOR.ToString())).ToList();
 		}
 
 		/**
@@ -124,16 +135,16 @@ namespace ShaderKitchen {
 		}
 
 		private static string _PathCombine (string head, string tail) {
-			if (!head.EndsWith(ShaderKitchenSettings.UNITY_FOLDER_SEPARATOR.ToString())) head = head + ShaderKitchenSettings.UNITY_FOLDER_SEPARATOR;
+			if (!head.EndsWith(UNITY_FOLDER_SEPARATOR.ToString())) head = head + UNITY_FOLDER_SEPARATOR;
 			
 			if (string.IsNullOrEmpty(tail)) return head;
-			if (tail.StartsWith(ShaderKitchenSettings.UNITY_FOLDER_SEPARATOR.ToString())) tail = tail.Substring(1);
+			if (tail.StartsWith(UNITY_FOLDER_SEPARATOR.ToString())) tail = tail.Substring(1);
 
 			return Path.Combine(head, tail);
 		}
 
 		public static bool IsMetaFile (string filePath) {
-			if (filePath.EndsWith(ShaderKitchenSettings.UNITY_METAFILE_EXTENSION)) return true;
+			if (filePath.EndsWith(UNITY_METAFILE_EXTENSION)) return true;
 			return false;
 		}
 	}

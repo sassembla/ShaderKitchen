@@ -1,0 +1,7 @@
+<linker>
+	<assembly fullname="UnityEngine">
+		<type fullname="UnityEngine.FlareLayer" preserve="all"/>
+		<type fullname="UnityEngine.AudioListener" preserve="all"/>
+		<type fullname="UnityEngine.Light" preserve="all"/>
+	</assembly>
+</linker>
