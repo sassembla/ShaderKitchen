@@ -23,7 +23,7 @@ namespace Unidon {
 			this.siteManagerObj = siteManagerObj;
 			this.cont = siteManagerObj.GetComponent<BootViewController>() as BootViewController;
 			this.basePath = indexUrl.Replace(UnidonSettings.BOOT_HTML_NAME, string.Empty);
-			this.targetAssetPathBase = Path.Combine(basePath, "AssetBundles");
+			this.targetAssetPathBase = "https:/" + Path.Combine("/dl.dropboxusercontent.com/u/36583594/outsource/test/", "AssetBundles");
 			
 			Caching.CleanCache();
 			sManager = this;

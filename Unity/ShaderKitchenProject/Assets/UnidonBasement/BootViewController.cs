@@ -25,28 +25,28 @@ namespace Unidon {
 			var dataPath = Application.dataPath;
 			var url = string.Empty;
 			
-			// set url for resources.
-			if (string.IsNullOrEmpty(Application.absoluteURL)) {
-				var localAssetPathBase = Directory.GetParent(dataPath).ToString();
-				var localAssetPath = Path.Combine(localAssetPathBase, "UnidonWeb/" + UnidonSettings.BOOT_HTML_NAME);
+			// // set url for resources.
+			// if (string.IsNullOrEmpty(Application.absoluteURL)) {
+			// 	var localAssetPathBase = Directory.GetParent(dataPath).ToString();
+			// 	var localAssetPath = Path.Combine(localAssetPathBase, "UnidonWeb/" + UnidonSettings.BOOT_HTML_NAME);
 				
-				url = "file://" + localAssetPath;
-			} else {
-				url = Application.absoluteURL;
-			}
+			// 	url = "file://" + localAssetPath;
+			// } else {
+			// 	url = Application.absoluteURL;
+			// }
 			
-			if (url.StartsWith("file://")) {
-				Debug.Log("running in local. attaching websocket debugguer. browser's log window is suck.");
-				// var webSocketConsole = new WebSocketConsole();
-				// Application.logMessageReceived += webSocketConsole.SendLog;
-			} else {
-				Debug.Log("running in production.");
-			}
+			// if (url.StartsWith("file://")) {
+			// 	Debug.Log("running in local. attaching websocket debugguer. browser's log window is suck.");
+			// 	// var webSocketConsole = new WebSocketConsole();
+			// 	// Application.logMessageReceived += webSocketConsole.SendLog;
+			// } else {
+			// 	Debug.Log("running in production.");
+			// }
 			
-			var usingMemory = Profiler.GetTotalAllocatedMemory();
-			var reservedMemory = Profiler.GetTotalReservedMemory();
+			// var usingMemory = Profiler.GetTotalAllocatedMemory();
+			// var reservedMemory = Profiler.GetTotalReservedMemory();
 			
-			Debug.Log("load done, show everything. url:" + url + " dataPath:" + dataPath + " usingMemory:" + usingMemory + " reservedMemory:" + reservedMemory);
+			// Debug.Log("load done, show everything. url:" + url + " dataPath:" + dataPath + " usingMemory:" + usingMemory + " reservedMemory:" + reservedMemory);
 			
 			// url:file:///Users/tomggg/Desktop/UniCMS/UniCMSWeb/index.html 
 			// dataPath:file:///Users/tomggg/Desktop/UniCMS/UniCMSWeb 

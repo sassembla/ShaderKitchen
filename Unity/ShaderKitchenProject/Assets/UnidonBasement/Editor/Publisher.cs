@@ -24,7 +24,7 @@ namespace Unidon {
 			
 			var assetTargetPath = FileController.PathCombine(Directory.GetParent(Application.dataPath).ToString(), "UnidonWeb/AssetBundles");
 			FileController.RemakeDirectory(assetTargetPath);
-			BuildPipeline.BuildAssetBundles(assetTargetPath, 0, BuildTarget.WebGL);
+			BuildPipeline.BuildAssetBundles(assetTargetPath, 0, BuildTarget.iOS);
 		}
 		
 		[MenuItem ("Unidon/Generate link.xml")] static void GenerateLinkXML () {
@@ -48,7 +48,7 @@ namespace Unidon {
 			// GenerateLinkXML();
 			
 			var targetPath = FileController.PathCombine(Directory.GetParent(Application.dataPath).ToString(), "UnidonWeb");
-			BuildPipeline.BuildPlayer(new string[]{"Assets/UnidonBasement/Boot.unity"}, targetPath, BuildTarget.WebGL, 0);
+			BuildPipeline.BuildPlayer(new string[]{"Assets/UnidonBasement/Boot.unity"}, targetPath, BuildTarget.iOS, 0);
 		}
 		
 		

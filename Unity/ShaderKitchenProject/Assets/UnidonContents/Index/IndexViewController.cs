@@ -26,13 +26,13 @@ public class IndexViewController : MonoBehaviour {
 		
 	}
 	
-    [DllImport("__Internal")] private static extern void Connect();
+    // [DllImport("__Internal")] private static extern void Connect();
 
     
-    [DllImport("__Internal")] private static extern void SendLog(string message);
+    // [DllImport("__Internal")] private static extern void SendLog(string message);
 		
 	
-	[DllImport("__Internal")] private static extern void CopyToClipboard (string text);
+	// [DllImport("__Internal")] private static extern void CopyToClipboard (string text);
 	
 	// この発展系でDLもいけるはず。
 }
