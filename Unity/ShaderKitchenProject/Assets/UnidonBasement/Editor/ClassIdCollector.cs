@@ -247,25 +247,53 @@ public class ClassIdCollector {
 		throw new Exception("failed to detect class id:" + classId + ", maybe id list is too old."); 
 	}
 	
-	public static void ExportLinkXMLWithUsingClassIds (List<int> classIds) {
+	public static void ExportLinkXMLWithUsingClassIds (HashSet<int> classIds) {
 		var targetPath = Path.Combine(Application.dataPath, "link.xml");
 		
 		var classNames = new List<string>();
-		classIds.ForEach(classId => classNames.Add(NameFromClassId(classId)));
+		foreach (var classId in classIds) {
+			classNames.Add(NameFromClassId(classId));
+		}
 		
+		/*
+			雑にxmlに吐く。
+			UI.に属するかどうかを調べるのが本格的に面倒臭いので両方のnamespaceとも吐く。
+		*/
 		using (var sw = new StreamWriter(targetPath)) {
 			sw.WriteLine(
-"<linker>\n	<assembly fullname=\"UnityEngine\">"
+"<linker>"
+			);
+			
+			sw.WriteLine(
+	"<assembly fullname=\"UnityEngine\">"
 			);
 
 			foreach (var className in classNames) {
 				sw.WriteLine(
-"		<type fullname=\"UnityEngine." + className + "\" preserve=\"all\"/>"
+"			<type fullname=\"UnityEngine." + className + "\" preserve=\"all\"/>"
 				);				
 			}
-
+			
 			sw.WriteLine(
-"	</assembly>\n</linker>"
+"	</assembly>"
+			);
+			
+			sw.WriteLine(
+"	<assembly fullname=\"UnityEngine.UI\">"
+			);
+
+			foreach (var className in classNames) {
+				sw.WriteLine(
+"			<type fullname=\"UnityEngine." + className + "\" preserve=\"all\"/>"
+				);				
+			}
+			
+			sw.WriteLine(
+"	</assembly>"
+			);
+			
+			sw.WriteLine(
+"</linker>"
 			);			
 		}
 	}
