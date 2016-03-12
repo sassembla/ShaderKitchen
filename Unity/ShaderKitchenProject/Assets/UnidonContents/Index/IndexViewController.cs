@@ -18,7 +18,8 @@ public class IndexViewController : MonoBehaviour {
 	public void GoToIndex (int index) {
 		switch (index) {
 			default: {
-				var sceneName = "page" + (index);
+				Debug.Log("here comes!" +index);
+				var sceneName = "page_" + (index);
 				SiteManager.sManager.OpenScene(sceneName);
 				break;
 			}
