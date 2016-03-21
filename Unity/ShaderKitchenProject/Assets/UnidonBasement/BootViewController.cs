@@ -55,7 +55,7 @@ namespace Unidon {
 			
 			// use this for debugging, editing.
 			if (SceneManager.GetActiveScene().name != "Boot") {
-				Debug.LogError("this is not Boot scene, current scene is:" + SceneManager.GetActiveScene().name);	
+				Debug.Log("this is not Boot scene, current scene is:" + SceneManager.GetActiveScene().name);	
 				return;
 			}
 			
