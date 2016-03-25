@@ -19,6 +19,8 @@ public class WebViewFunction : MonoBehaviour {
 	
 	
 	private static void DrawHTML (string text, Rect showRect) {
+		// この関数の中身を、ブラウザで見ているときとそうでないときで入れ替えればいい。
+		
 		//backup color 
 		Color backupColor = GUI.color;
 		Color backupContentColor = GUI.contentColor;
@@ -28,12 +30,10 @@ public class WebViewFunction : MonoBehaviour {
 		GUI.contentColor = new Color(1f, 1f, 1f, 0f);
 		GUIStyle style = new GUIStyle(GUI.skin.textArea);
 		
-		// このサイズでUIを出力すればよさげ！よし、ビューのProxyができるぞ。
-		Rect bounds = showRect;
-		text = GUI.TextArea(bounds, text);
+		text = GUI.TextArea(showRect, text);
 
 		//get the texteditor of the textarea to control selection
-		int controlID = GUIUtility.GetControlID(bounds.GetHashCode(), FocusType.Keyboard);    
+		int controlID = GUIUtility.GetControlID(showRect.GetHashCode(), FocusType.Keyboard);    
 		TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), controlID -1);
 
 		//set background of all textfield transparent

@@ -308,7 +308,7 @@ namespace MarkdownSharp
                 _backslashEscapeTable.Add(@"\" + key, hash);
                 backslashPattern += Regex.Escape(@"\" + key) + "|";
             }
-			Debug.LogError("Compiled");
+			
             _backslashEscapes = new Regex(backslashPattern.Substring(0, backslashPattern.Length - 1)/*, RegexOptions.Compiled*/);
         }
 
