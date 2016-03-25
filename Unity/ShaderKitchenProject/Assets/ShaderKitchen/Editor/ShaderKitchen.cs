@@ -12,8 +12,8 @@ namespace ShaderKitchen {
 		[SerializeField] public bool recording;
 	}
 	
-	[InitializeOnLoad]
-	public class ShaderKitchen {
+	
+	[InitializeOnLoad] public class ShaderKitchen {
 		
 		private static DataStruct dataStruct;
 		
@@ -36,8 +36,8 @@ namespace ShaderKitchen {
 			 
 		}
 		
-		[MenuItem(ShaderKitchenSettings.GUI_MENU_RECORDING, false, 1)]
-		public static void Recording () {
+		
+		[MenuItem(ShaderKitchenSettings.GUI_MENU_RECORDING, false, 1)] public static void Recording () {
 			Load();
 						
 			dataStruct.recording = true;
