@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class WebTextScript : MonoBehaviour {
 	private string html;
@@ -7,12 +8,13 @@ public class WebTextScript : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		// var rectTrans = GetComponent<RectTransform>();
-		// textRect = rectTrans.rect;
+		var rectTrans = GetComponent<Text>();
 		
 		// load text data from .md
 		var bindata = Resources.Load("Page_1") as TextAsset;
 		html = WebViewFunction.MarkdownToHTML(bindata.text);
+		Debug.LogError("html:" + html);
+		rectTrans.text = html;
 	}
 	
 	void OnGUI () {
@@ -20,6 +22,6 @@ public class WebTextScript : MonoBehaviour {
 		// var rectTrans = GetComponent<RectTransform>();
 		// textRect = new Rect(rectTrans.rect.x + 500, rectTrans.rect.y + 100, rectTrans.rect.width, rectTrans.rect.height);
 		
-		WebViewFunction.DrawHTML(html, textRect);
+		// WebViewFunction.DrawHTML(html, textRect);
 	}
 }
