@@ -17,8 +17,11 @@ public class WebViewFunction {
 		var lines = html.Replace("<br>", "\n")
 			// このへんで、キーワードごとのハイライトも可能。
 			.Replace("<p>", "").Replace("</p>", "")
-			.Replace("<h2>", "<size=30>").Replace("</h2>", "</size>");
+			.Replace("<h2>", "<size=30>").Replace("</h2>", "</size>")
+			.Replace("<pre><code class=\"language-\">", "").Replace("</code></pre>", "")
+			.Replace("/**/", "")
+			;
 		
-		return html;
+		return lines;
 	}
 }
