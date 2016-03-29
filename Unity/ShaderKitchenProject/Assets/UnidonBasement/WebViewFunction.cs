@@ -46,6 +46,13 @@ namespace Unidon {
 			.Replace("ENDCG","<color=#ff33ff>ENDCG</color>")
 			.Replace("#pragma","<color=#ff33ff>#pragma</color>")
 			.Replace("#include","<color=#ff33ff>#include</color>")
+			//ダブルクォートの色
+			.Replace("\"Texture\"","<color=#ffaa00>\"Texture\"</color>")
+			.Replace("\"white\"","<color=#ffaa00>\"white\"</color>")
+			.Replace("\"RenderType\"","<color=#ffaa00>\"RenderType\"</color>")
+			.Replace("\"Opaque\"","<color=#ffaa00>\"Opaque\"</color>")
+			//コメントアウトの色
+				.Replace("//UnityCG.cginc","<color=#00ffff>//UnityCG.cginc</color>")
 			;
 
 			return lines;
