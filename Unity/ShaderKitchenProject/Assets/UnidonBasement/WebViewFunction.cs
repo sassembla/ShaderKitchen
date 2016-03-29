@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using MarkdownSharp;
 using UnityEngine;
 
@@ -56,11 +57,11 @@ namespace Unidon {
 				}
 			)
 			
-			// ラインの先頭をみて色を変える系
-			.SetTagsOfLineStartsWith(
-				new Dictionary<string, string[]> {
+			// ラインの中身の特定文字列の組み合わせを探して、以降の色を変える系
+			.SetTagsOfLineContains(
+				new Dictionary<string, TagPair> {
 					//コメントアウトの色
-					{"//", new string[]{"<color=#00ffff>", "</color>"}}
+					{"//", new TagPair("<color=#00ffff>", "</color>")}
 				}
 			)
 			;
@@ -69,13 +70,43 @@ namespace Unidon {
 		}
 		
 		private static string SetTagsOfWrappedWith (this string source, Dictionary<string, string[]> keyAndTag) {
+			// var lines = source.Split('\n');
+			// foreach (var line in lines) {
+			// 	var 
+			// 	foreach (var key in keyAndTag.Keys) {
+			// 		if (line.Contains(key)) 
+			// 	}
+			// }
 			// まだ考え中。
 			return source;
 		}
 		
-		private static string SetTagsOfLineStartsWith (this string source, Dictionary<string, string[]> keyAndTag) {
-			// まだ考え中。
-			return source;
+		private static string SetTagsOfLineContains (this string source, Dictionary<string, TagPair> keyAndTag) {
+			var newLines = source.Split('\n');
+			var lines = source.Split('\n');
+			
+			foreach (var line in lines.Select((val, index) => new {index, val})) {
+				foreach (var key in keyAndTag.Keys) {
+					if (line.val.Contains(key)) {
+						var index = line.val.IndexOf(key);
+						var head = line.val.Substring(0, index);
+						var tail = line.val.Substring(index, line.val.Length - index);
+						newLines[line.index] = head + keyAndTag[key].startTag + tail + keyAndTag[key].endTag;
+					} 
+				}
+			}
+			
+			return string.Join("\n", newLines);
+		}
+		
+		private struct TagPair {
+			public readonly string startTag;
+			public readonly string endTag;
+			
+			public TagPair (string startTag, string endTag) {
+				this.startTag = startTag;
+				this.endTag = endTag;
+			}	
 		}
 	}
 }
