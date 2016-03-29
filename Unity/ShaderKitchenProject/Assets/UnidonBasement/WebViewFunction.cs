@@ -12,13 +12,13 @@ public class WebViewFunction {
 		return richtext;
 	}
 	
+	
 	private static string HTMLToRichText (string html) {
 		var lines = html.Replace("<br>", "\n")
 			// このへんで、キーワードごとのハイライトも可能。
-			.Replace("<p>", "<color=#ff0000>").Replace("</p>", "</color>")
+			.Replace("<p>", "").Replace("</p>", "")
 			.Replace("<h2>", "<size=30>").Replace("</h2>", "</size>");
 		
-		
-		return lines;
+		return html;
 	}
 }
