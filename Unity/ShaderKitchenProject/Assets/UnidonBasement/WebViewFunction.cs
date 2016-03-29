@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using MarkdownSharp;
 using UnityEngine;
 
 namespace Unidon {
-	public class WebViewFunction {
+	public static class WebViewFunction {
 		private static Markdown markdownSharp = new Markdown();
 		
 		public static string MarkdownToRichText (string markdown) {
@@ -46,16 +47,35 @@ namespace Unidon {
 			.Replace("ENDCG","<color=#ff33ff>ENDCG</color>")
 			.Replace("#pragma","<color=#ff33ff>#pragma</color>")
 			.Replace("#include","<color=#ff33ff>#include</color>")
-			//ダブルクォートの色
-			.Replace("\"Texture\"","<color=#ffaa00>\"Texture\"</color>")
-			.Replace("\"white\"","<color=#ffaa00>\"white\"</color>")
-			.Replace("\"RenderType\"","<color=#ffaa00>\"RenderType\"</color>")
-			.Replace("\"Opaque\"","<color=#ffaa00>\"Opaque\"</color>")
-			//コメントアウトの色
-				.Replace("//UnityCG.cginc","<color=#00ffff>//UnityCG.cginc</color>")
+			
+			// 囲まれてる範囲の色を変える系
+			.SetTagsOfWrappedWith(
+				//ダブルクォートの色
+				new Dictionary<string, string[]> {
+					{"\"", new string[]{"<color=#ffaa00>", "</color>"}}
+				}
+			)
+			
+			// ラインの先頭をみて色を変える系
+			.SetTagsOfLineStartsWith(
+				new Dictionary<string, string[]> {
+					//コメントアウトの色
+					{"//", new string[]{"<color=#00ffff>", "</color>"}}
+				}
+			)
 			;
 
 			return lines;
+		}
+		
+		private static string SetTagsOfWrappedWith (this string source, Dictionary<string, string[]> keyAndTag) {
+			// まだ考え中。
+			return source;
+		}
+		
+		private static string SetTagsOfLineStartsWith (this string source, Dictionary<string, string[]> keyAndTag) {
+			// まだ考え中。
+			return source;
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class WebStreamImageScript : MonoBehaviour {
 		/*
 			まずは、AssetBundleにそういうのが含まれるようにしたい。
 			・200枚くらいの画像をどうAssetBundleにするか。フォルダに入れてBundlizeルールにしちゃうか。
-			・
+			・そいつをロードする。のか？AssetBundle化するためのトリガーをHierarchyに置ければいいんだよな。
 		*/
 	}
 	
