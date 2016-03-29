@@ -50,10 +50,10 @@ namespace Unidon {
 			.Replace("#include","<color=#ff33ff>#include</color>")
 			
 			// 囲まれてる範囲の色を変える系
-			.SetTagsOfWrappedWith(
-				//ダブルクォートの色
-				new Dictionary<string, string[]> {
-					{"\"", new string[]{"<color=#ffaa00>", "</color>"}}
+			.SetTagsOfWrappedLine(
+				new Dictionary<char, TagPair> {
+					//ダブルクォートの色
+					{'\"', new TagPair("<color=#ffaa00>", "</color>")}
 				}
 			)
 			
@@ -69,16 +69,55 @@ namespace Unidon {
 			return lines;
 		}
 		
-		private static string SetTagsOfWrappedWith (this string source, Dictionary<string, string[]> keyAndTag) {
-			// var lines = source.Split('\n');
-			// foreach (var line in lines) {
-			// 	var 
-			// 	foreach (var key in keyAndTag.Keys) {
-			// 		if (line.Contains(key)) 
-			// 	}
-			// }
-			// まだ考え中。
-			return source;
+		private static string SetTagsOfWrappedLine (this string source, Dictionary<char, TagPair> keyAndTag) {
+			var newLines = source.Split('\n');
+			var lines = source.Split('\n');
+			
+			foreach (var line in lines.Select((val, index) => new {index, val})) {
+				
+				var lineText = string.Empty;
+				
+				foreach (var key in keyAndTag.Keys) {
+					/*
+						先頭に空白 + keyが来ると、なんかダメ。
+					*/
+					
+					if (line.val.Contains(key)) {
+						// this array contains empty head of line.
+						var splittedLineArray = line.val.Split(key);
+						
+						var containedByTopOfLine = line.val.StartsWith(key.ToString());
+						
+						var pairTopIndex = 0;
+						if (!containedByTopOfLine) {
+							lineText = splittedLineArray[0];
+							pairTopIndex = 1;// 0 element is not wrapped by key. start from 1 of array element.
+						}
+						
+						/*
+							pairTopIndexの要素から先を、交互にtag + keyで挟む。
+							<TAG>KEYsomething1KEY</TAG>else1<TAG>KEYsomething2KEY</TAG>else2 ...  
+						*/
+						var skipNext = false;
+						for (var i = pairTopIndex; i < splittedLineArray.Length; i++) {
+							if (skipNext) {
+								skipNext = false;
+								lineText += splittedLineArray[i];
+								continue;
+							}
+							
+							var part = splittedLineArray[i];
+							
+							// matched.
+							lineText += keyAndTag[key].startTag + key + splittedLineArray[i] + key + keyAndTag[key].endTag;
+							skipNext = true;
+						}
+						newLines[line.index] = lineText;
+					} 
+				}
+			}
+			
+			return string.Join("\n", newLines);
 		}
 		
 		private static string SetTagsOfLineContains (this string source, Dictionary<string, TagPair> keyAndTag) {

@@ -41,15 +41,15 @@ Shader "ShaderDic/SMP1_Unlit"
 			{
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex); 
-		// モデルビュー行列（Object2World）x 射影行列 (v.vertex)
-		// ワールド座標系からプロジェクション座標系
-		//（レンダリングされる画面の座標系）へ変換します
+				// モデルビュー行列（Object2World）x 射影行列 (v.vertex)
+				// ワールド座標系からプロジェクション座標系
+				//（レンダリングされる画面の座標系）へ変換します
 				/**/
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-		//InspectorのTillingとOffsetを反映するための処理になります。 		//(UnityCg.cginc参照)
-		// #define TRANSFORM_TEX(tex,name) (tex.xy * name##_ST.xy + name##_ST.zw)
-		//o.uv = v.uv;
-		// ↑こっちにしてみると、TillingとOffsetがどう変わるかわかります
+				//InspectorのTillingとOffsetを反映するための処理になります。 		//(UnityCg.cginc参照)
+				// #define TRANSFORM_TEX(tex,name) (tex.xy * name##_ST.xy + name##_ST.zw)
+				//o.uv = v.uv;
+				// ↑こっちにしてみると、TillingとOffsetがどう変わるかわかります
 				/**/
 				return o;
 			}
