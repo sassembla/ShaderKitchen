@@ -7,25 +7,20 @@ using Unidon;
 
 public class IndexViewController : MonoBehaviour {
 	
-	
-	public void Awake () {}
-	
-	public void ShowContext () {
-		// 右クリックを検知できるのかな。そもそもなんかキーバインド持って行かれてるきがするな。
-		// 
-	}
-	
 	public void GoToIndex (int index) {
 		switch (index) {
 			default: {
-				Debug.Log("here comes!" +index);
 				var sceneName = "page_" + (index);
 				SiteManager.sManager.OpenScene(sceneName);
 				break;
 			}
 		}
-		
 	}
+	
+	public void BackToIndex () {
+		SiteManager.sManager.BackToIndex();
+	}
+	
 	
     [DllImport("__Internal")] private static extern void Connect();
 

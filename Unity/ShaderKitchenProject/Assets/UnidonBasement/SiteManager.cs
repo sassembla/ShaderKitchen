@@ -21,11 +21,15 @@ namespace Unidon {
 		
 		public SiteManager (GameObject siteManagerObj, string indexUrl) {
 			this.siteManagerObj = siteManagerObj;
+			GameObject.DontDestroyOnLoad(siteManagerObj);
+			
 			this.cont = siteManagerObj.GetComponent<BootViewController>() as BootViewController;
 			this.basePath = indexUrl.Replace(UnidonSettings.BOOT_HTML_NAME, string.Empty);
 			this.targetAssetPathBase = Path.Combine(basePath, "AssetBundles");
 			
+			Debug.LogWarning("キャッシュ消してる");
 			Caching.CleanCache();
+			
 			sManager = this;
 		}
 		

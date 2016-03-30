@@ -53,17 +53,25 @@ namespace Unidon {
 			// usingMemory:		1,143,025 
 			// reservedMemory:	1,585,093
 			
-			// use this for debugging, editing.
-			if (SceneManager.GetActiveScene().name != "Boot") {
-				Debug.Log("this is not Boot scene, current scene is:" + SceneManager.GetActiveScene().name);	
+			/*
+				boot以外からの起動であれば、SiteManagerObjectが存在しないと思うのでなんとかする。
+			*/
+			if (SceneManager.GetActiveScene().name == "Boot") {
+				// loaded from Boot scene. start loading index scene.
+				var siteManagerObj = GameObject.Find("SiteManagerObject");
+				siteManager = new SiteManager(siteManagerObj, url);
+			} else {
+				Debug.LogError("this is not Boot scene, current scene is:" + SceneManager.GetActiveScene().name);
+				var existSiteManagerObj = GameObject.Find("SiteManagerObject");
+				if (existSiteManagerObj != null) return;
+				
+				// create instance from prefab.
+				var prefab = Resources.Load("SiteManagerObject") as GameObject;
+		 		var siteManagerObj = GameObject.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+				
+				siteManager = new SiteManager(siteManagerObj, url);
 				return;
 			}
-			
-			// loaded from Boot scene. start loading index scene.
-			var siteManagerObj = GameObject.Find("SiteManagerObject");
-			DontDestroyOnLoad(siteManagerObj);
-			
-			siteManager = new SiteManager(siteManagerObj, url);
 			
 			Debug.Log("urlによって呼び出すものを変えればいい。index.htmlからきてるなら、index。それ以外ならそれ以外のコンテンツを読み出す。 url:" + url);
 			siteManager.LoadIndexView();
