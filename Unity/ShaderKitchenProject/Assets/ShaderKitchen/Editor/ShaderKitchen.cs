@@ -55,7 +55,7 @@ namespace ShaderKitchen {
 		
 		private static Texture2D CaptureScreenshot () {
 			var texture = new Texture2D(ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH, ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT, TextureFormat.RGB24, true);
-			texture.ReadPixels(new Rect(0, 0, ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH, ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT), 0, 0, false);
+			texture.ReadPixels(new Rect(56, 0, ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH, ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT), 0, 0, false);
 			texture.Apply();
 			return texture;
 		}
