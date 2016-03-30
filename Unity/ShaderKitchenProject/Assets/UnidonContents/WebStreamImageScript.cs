@@ -5,7 +5,7 @@ public class WebStreamImageScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.LogError("このタイミングから先で、勝手にpngをロードし、ロードが終わったらアニメーションっていうのをやる。");
+		Debug.LogWarning("このタイミングから先で、勝手にpngをロードし、ロードが終わったらアニメーションっていうのをやる。");
 		/*
 			まずは、AssetBundleにそういうのが含まれるようにしたい。
 			・200枚くらいの画像をどうAssetBundleにするか。フォルダに入れてBundlizeルールにしちゃうか。

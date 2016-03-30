@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using Unidon;
+using UnityEngine.SceneManagement;
 
 public class WebTextScript : MonoBehaviour {
 	// Use this for initialization
@@ -15,8 +16,11 @@ public class WebTextScript : MonoBehaviour {
 		
 		var rectTrans = GetComponent<InputField>();// このコンポーネント、最初から組み込めないかな。できるような。
 		
+		// get scene name then use it for loading text from Resources/SCENE_NAME.txt
+		var currentSceneName = SceneManager.GetActiveScene().name;
+		
 		// load text data from .md
-		var bindata = Resources.Load("Page_1") as TextAsset;// ここ、AssetBundleにできるといいなあ。更新が楽。
+		var bindata = Resources.Load(currentSceneName) as TextAsset;// ここ、AssetBundleにできるといいなあ。更新が楽。
 		rectTrans.text = WebViewFunction.MarkdownToRichText(bindata.text);
 	}
 	
