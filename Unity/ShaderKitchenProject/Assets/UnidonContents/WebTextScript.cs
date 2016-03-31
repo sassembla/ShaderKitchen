@@ -21,6 +21,10 @@ public class WebTextScript : MonoBehaviour {
 		
 		// load text data from .md
 		var bindata = Resources.Load(currentSceneName) as TextAsset;// ここ、AssetBundleにできるといいなあ。更新が楽。
+		if (bindata == null) {
+			Debug.LogError("WebText data is null:" + currentSceneName);
+			return;
+		} 
 		rectTrans.text = WebViewFunction.MarkdownToRichText(bindata.text);
 	}
 	

@@ -53,28 +53,34 @@ namespace Unidon {
 			// usingMemory:		1,143,025 
 			// reservedMemory:	1,585,093
 			
-			/*
-				boot以外からの起動であれば、SiteManagerObjectが存在しないと思うのでなんとかする。
-			*/
-			if (SceneManager.GetActiveScene().name == "Boot") {
-				// loaded from Boot scene. start loading index scene.
-				var siteManagerObj = GameObject.Find("SiteManagerObject");
-				siteManager = new SiteManager(siteManagerObj, url);
-			} else {
-				Debug.LogError("this is not Boot scene, current scene is:" + SceneManager.GetActiveScene().name);
-				var existSiteManagerObj = GameObject.Find("SiteManagerObject");
-				if (existSiteManagerObj != null) return;
-				
-				// create instance from prefab.
-				var prefab = Resources.Load("SiteManagerObject") as GameObject;
-		 		var siteManagerObj = GameObject.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
-				
-				siteManager = new SiteManager(siteManagerObj, url);
-				return;
-			}
 			
-			Debug.Log("urlによって呼び出すものを変えればいい。index.htmlからきてるなら、index。それ以外ならそれ以外のコンテンツを読み出す。 url:" + url);
-			siteManager.LoadIndexView();
+			switch (SceneManager.GetActiveScene().name) {
+				case "Boot": {
+					/*
+						起動はすべてBootから行われるが、URLがBoot用(index.htmlとか)でない場合、対象のシーンから開く、とかを実行したい。
+						なので、「起動シーンはBootだが、Indexではなく特定のページを表示する」とかはあり、ここのコードを拡張することで得られそう。
+					*/
+					// loaded from Boot scene. start loading index scene.
+					var siteManagerObj = GameObject.Find("SiteManagerObject");
+					siteManager = new SiteManager(siteManagerObj, url);
+					siteManager.LoadIndexView();
+					break;
+				}
+				default: {
+					/*
+						boot以外からの起動で、まあ、エディタからしかここにこれないと思う。
+					*/
+					var existSiteManagerObj = GameObject.Find("SiteManagerObject");
+					if (existSiteManagerObj != null) return;
+					
+					// create instance from prefab.
+					var prefab = Resources.Load("SiteManagerObject") as GameObject;
+					var siteManagerObj = GameObject.Instantiate(prefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+					
+					siteManager = new SiteManager(siteManagerObj, url);
+					break;
+				}
+			}
 		}
 	}
 	
