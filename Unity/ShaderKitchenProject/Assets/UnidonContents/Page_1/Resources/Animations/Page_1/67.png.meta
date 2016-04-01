@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 3319f9d9357ce471bbafcc50ca168f63
-timeCreated: 1459412793
+guid: da544ac95d12041139c4a55748421a36
+timeCreated: 1459521229
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0

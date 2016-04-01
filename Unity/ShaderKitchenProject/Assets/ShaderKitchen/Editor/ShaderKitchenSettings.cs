@@ -13,13 +13,13 @@ namespace ShaderKitchen {
 		*/
 		public const string SCREENSHOT_FILE_EXTENSION = ".png";
 		public const int MAX_SCREENSHOT_FRAME = 100;
-		public const int SCREENSHOT_SIZE_WIDTH = 300;
-		public const int SCREENSHOT_SIZE_HEIGHT = 500;
+		public const int SCREENSHOT_SIZE_WIDTH = 366;
+		public const int SCREENSHOT_SIZE_HEIGHT = 266;
 		
 		public const string SETTING_FILE_PATH = "Assets/ShaderKitchen/Editor/Data/data.json";
 		public const string SCREENSHOT_PATH = "Assets/ShaderKitchen/Editor/ScreenTemp";
 		
-		public const string GUI_MENU_RECORDING = "ShaderKitchen/Record(test)";
+		public const string GUI_MENU_RECORDING = "ShaderKitchen/Record";
 		
 		public const string GUI_MENU_EXPORTPACKAGE = "ShaderKitchen/Export package(test)";
 		public const bool IGNORE_META = true;
