@@ -31,6 +31,7 @@ namespace ShaderKitchen {
 			}
 			
 			if (!dataStruct.recording) return;
+			
 			screenshotWidth = ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH;
 			screenshotHeight = ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT;
 			EditorApplication.update += Update; 
