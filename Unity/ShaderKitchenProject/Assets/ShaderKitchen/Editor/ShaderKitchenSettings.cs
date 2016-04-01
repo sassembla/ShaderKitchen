@@ -3,8 +3,8 @@ namespace ShaderKitchen {
 		
 		public const string SCREENSHOT_FILE_EXTENSION = ".png";
 		public const int MAX_SCREENSHOT_FRAME = 100;
-		public const int SCREENSHOT_SIZE_WIDTH = 528;
-		public const int SCREENSHOT_SIZE_HEIGHT = 396;
+		public const int SCREENSHOT_SIZE_WIDTH = 300;
+		public const int SCREENSHOT_SIZE_HEIGHT = 500;
 		
 		public const string SETTING_FILE_PATH = "Assets/ShaderKitchen/Editor/Data/data.json";
 		public const string SCREENSHOT_PATH = "Assets/ShaderKitchen/Editor/ScreenTemp";

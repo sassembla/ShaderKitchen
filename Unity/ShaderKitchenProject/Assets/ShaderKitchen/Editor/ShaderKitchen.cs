@@ -30,10 +30,10 @@ namespace ShaderKitchen {
 				dataStruct = JsonUtility.FromJson<DataStruct>(settingFileString);
 			}
 			
-			if (!dataStruct.recording) return; 
-			
-			EditorApplication.update += Update;
-			 
+			if (!dataStruct.recording) return;
+			screenshotWidth = ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH;
+			screenshotHeight = ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT;
+			EditorApplication.update += Update; 
 		}
 		
 		
@@ -52,46 +52,67 @@ namespace ShaderKitchen {
 		
 		
 		private static int frame;
+		private static int screenshotWidth;
+		private static int screenshotHeight;
 		
-		private static Texture2D CaptureScreenshot () {
-			var texture = new Texture2D(ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH, ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT, TextureFormat.RGB24, true);
-			texture.ReadPixels(new Rect(56, 0, ShaderKitchenSettings.SCREENSHOT_SIZE_WIDTH, ShaderKitchenSettings.SCREENSHOT_SIZE_HEIGHT), 0, 0, false);
-			texture.Apply();
-			return texture;
+		private static Texture2D CaptureScreenshot (Camera currentCamera) {
+			// ここでサイズを指定すると、そのサイズにセンタリングしたスクリーンショットが手に入る。
+			
+			// render to target texture.
+			var texture = new RenderTexture(screenshotWidth, screenshotHeight, 24);
+			currentCamera.targetTexture = texture;
+			currentCamera.Render();
+			
+			// then, set render result to screen.
+			RenderTexture.active = currentCamera.targetTexture;
+			
+			// create new Texture2D for get screenshot.
+			var newTexture = new Texture2D(currentCamera.pixelWidth, currentCamera.pixelHeight, TextureFormat.RGB24, true);
+			newTexture.ReadPixels(new Rect(0, 0, texture.width, texture.height), 0, 0);
+			newTexture.Apply();
+			
+			currentCamera.targetTexture = null;
+			return newTexture;
 		}
 		
 		private static Texture2D[] shots = new Texture2D[ShaderKitchenSettings.MAX_SCREENSHOT_FRAME];
 		
+		private static Camera camera;
+		
 		private static void Update () {
 			if (ShaderKitchenSettings.MAX_SCREENSHOT_FRAME < frame) return;
 			
-			if (dataStruct.recording) {
-				if (frame == ShaderKitchenSettings.MAX_SCREENSHOT_FRAME) {
-					frame++;
+			if (frame == 0) {
+				camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+				if (screenshotWidth == 0) screenshotWidth = camera.pixelWidth;
+				if (screenshotHeight == 0) screenshotHeight = camera.pixelHeight;
+			}
+			
+			if (frame == ShaderKitchenSettings.MAX_SCREENSHOT_FRAME) {
+				frame++;
+				
+				foreach (var tex in shots.Select((v,i) => new {i, v})) {
+					var bytes = tex.v.EncodeToPNG();
+					var screenShotsPath = FileController.PathCombine(ShaderKitchenSettings.SCREENSHOT_PATH, tex.i + ShaderKitchenSettings.SCREENSHOT_FILE_EXTENSION);
 					
-					foreach (var tex in shots.Select((v,i) => new {i, v})) {
-						var bytes = tex.v.EncodeToPNG();
-						var screenShotsPath = FileController.PathCombine(ShaderKitchenSettings.SCREENSHOT_PATH, tex.i + ShaderKitchenSettings.SCREENSHOT_FILE_EXTENSION);
-						
-						using (var file = File.Open(screenShotsPath, FileMode.Create)) {
-							using (var binaryWriter = new BinaryWriter(file) ) {
-								binaryWriter.Write(bytes);
-							}
+					using (var file = File.Open(screenShotsPath, FileMode.Create)) {
+						using (var binaryWriter = new BinaryWriter(file) ) {
+							binaryWriter.Write(bytes);
 						}
 					}
-					
-					EditorApplication.isPlaying = false;
-					dataStruct.recording = false;
-					Save();
-					
-					AssetDatabase.Refresh();
-					return;
 				}
 				
-				var t = CaptureScreenshot();
-				shots[frame] = t;
-				frame++;
+				EditorApplication.isPlaying = false;
+				dataStruct.recording = false;
+				Save();
+				
+				AssetDatabase.Refresh();
+				return;
 			}
+			
+			var t = CaptureScreenshot(camera);
+			shots[frame] = t;
+			frame++;
 		}
 		
 		private static void Load () {
