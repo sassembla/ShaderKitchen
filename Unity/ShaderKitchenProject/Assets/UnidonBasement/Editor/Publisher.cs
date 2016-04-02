@@ -14,7 +14,7 @@ namespace Unidon {
 			var targetSceneFilePaths = FileController.FilePathsInFolder(bundleTargetBasePath)
 				.Where(path => IsQualified(path))
 				.Select(path => path.Replace(Application.dataPath, "Assets"))
-				.ToList(); 
+				.ToList();
 			
 			foreach (var targetSceneFilePath in targetSceneFilePaths) {
 				var assetName = Path.GetFileNameWithoutExtension(targetSceneFilePath).ToLower();
@@ -23,7 +23,7 @@ namespace Unidon {
 			}
 			
 			var assetTargetPath = FileController.PathCombine(Directory.GetParent(Application.dataPath).ToString(), "UnidonWeb/AssetBundles");
-			FileController.RemakeDirectory(assetTargetPath);
+			// FileController.RemakeDirectory(assetTargetPath);
 			BuildPipeline.BuildAssetBundles(assetTargetPath, 0, BuildTarget.WebGL);
 		}
 		
