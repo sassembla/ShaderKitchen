@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using Unidon;
 using UnityEngine.SceneManagement;
-using System.Text;
 
-namespace ShaderKitchen.WebUI {
-	public class WebTextScript : MonoBehaviour {
+namespace ShaderKitchen.WebUI
+{
+    public class WebTextScript : MonoBehaviour {
 		public TextAsset textData;
 		
 		// Use this for initialization
