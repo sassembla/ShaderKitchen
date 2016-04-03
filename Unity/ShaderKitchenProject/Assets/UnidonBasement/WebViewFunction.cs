@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using MarkdownSharp;
 using UnityEngine;
 
@@ -150,5 +151,15 @@ namespace Unidon {
 				this.endTag = endTag;
 			}	
 		}
+		
+		/**
+			web-download function
+		*/
+		[DllImport("__Internal")] public static extern void DownloadFile(string fileUrl);
+		
+		/**
+			copy function
+		*/
+		[DllImport("__Internal")] public static extern void CopyToClipboard(string message);
 	}
 }

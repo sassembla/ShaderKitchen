@@ -2,13 +2,19 @@
 using System.Collections;
 using Unidon;
 
-public class PageViewController : MonoBehaviour {
+public class PageVIewController : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
 	
-	public void BackToIndex () {
-		SiteManager.sManager.BackToIndex();
 	}
 	
-	public void DownloadPackage (int index) {
-		Debug.LogError("not yet implemented");
+	// Update is called once per frame
+	void Update () {
+	
+	}
+	
+	public void Download (string url) {
+		WebViewFunction.DownloadFile(url);
 	}
 }

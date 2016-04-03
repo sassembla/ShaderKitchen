@@ -14,7 +14,6 @@ namespace Unidon {
 	}
 	
 	public class BootViewController : MonoBehaviour {
-		public static List<string> indexies;
 		
 		private static SiteManager siteManager;
 		
@@ -26,22 +25,22 @@ namespace Unidon {
 			var url = string.Empty;
 			
 			// set url for resources.
+			/*
+				local
+			*/
 			if (string.IsNullOrEmpty(Application.absoluteURL)) {
 				var localAssetPathBase = Directory.GetParent(dataPath).ToString();
 				var localAssetPath = Path.Combine(localAssetPathBase, "UnidonWeb/" + UnidonSettings.BOOT_HTML_NAME);
 				
 				url = "file://" + localAssetPath;
-			} else {
+			}
+			/*
+				web
+			*/
+			else {
 				url = Application.absoluteURL;
 			}
 			
-			if (url.StartsWith("file://")) {
-				Debug.Log("running in local. attaching websocket debugguer. browser's log window is suck.");
-				// var webSocketConsole = new WebSocketConsole();
-				// Application.logMessageReceived += webSocketConsole.SendLog;
-			} else {
-				Debug.Log("running in production.");
-			}
 			
 			var usingMemory = Profiler.GetTotalAllocatedMemory();
 			var reservedMemory = Profiler.GetTotalReservedMemory();
@@ -82,19 +81,5 @@ namespace Unidon {
 				}
 			}
 		}
-	}
-	
-	public class WebSocketConsole {
-		// connect to editor.
-		public WebSocketConsole () {
-			Debug.LogError("not yet implemented. EditorとWSで通信したいっすね。ログをどっかに吐きたい");
-		}
-		
-		
-		public void SendLog (string condition, string stackTrace, LogType type) {
-			
-		}
-		
-		
 	}
 }

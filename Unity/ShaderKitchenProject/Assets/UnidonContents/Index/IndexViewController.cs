@@ -21,14 +21,4 @@ public class IndexViewController : MonoBehaviour {
 		SiteManager.sManager.BackToIndex();
 	}
 	
-	
-    [DllImport("__Internal")] private static extern void Connect();
-
-    
-    [DllImport("__Internal")] private static extern void SendLog(string message);
-		
-	
-	[DllImport("__Internal")] private static extern void CopyToClipboard (string text);
-	
-	// この発展系でDLもいけるはず。
 }
