@@ -14,6 +14,10 @@ public class PageVIewController : MonoBehaviour {
 	
 	}
 	
+	public void BackToIndex () {
+		SiteManager.sManager.BackToIndex();
+	}
+	
 	public void Download (string url) {
 		WebViewFunction.DownloadFile(url);
 	}

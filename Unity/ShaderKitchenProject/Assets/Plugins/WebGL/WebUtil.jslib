@@ -9,7 +9,10 @@ var WebUtil = {
 		var link = document.createElement("a");
 		// link.download = name;
 		link.href = urlString;
+		
+		document.body.appendChild(link);
 		link.click();
+		document.body.removeChild(link);
 	}
 };
 
