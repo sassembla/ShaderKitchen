@@ -52,7 +52,6 @@ namespace Unidon {
 			// usingMemory:		1,143,025 
 			// reservedMemory:	1,585,093
 			
-			
 			switch (SceneManager.GetActiveScene().name) {
 				case "Boot": {
 					/*
@@ -62,7 +61,18 @@ namespace Unidon {
 					// loaded from Boot scene. start loading index scene.
 					var siteManagerObj = GameObject.Find("SiteManagerObject");
 					siteManager = new SiteManager(siteManagerObj, url);
-					siteManager.LoadIndexView();
+					
+					var lastPathComponent = Path.GetFileName(url);
+					switch (lastPathComponent) {
+						case "index.html": {
+							siteManager.LoadIndexView();
+							break;
+						}
+						default: {
+							var pageCount = 0; 
+							break;
+						}
+					}
 					break;
 				}
 				default: {
