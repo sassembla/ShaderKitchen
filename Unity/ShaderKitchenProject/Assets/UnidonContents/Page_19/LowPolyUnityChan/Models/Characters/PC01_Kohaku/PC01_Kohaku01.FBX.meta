@@ -112,7 +112,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -144,8 +144,404 @@ ModelImporter:
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    human: []
-    skeleton: []
+    human:
+    - boneName: Test:Hips
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftUptLeg
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightUpLeg
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftLeg
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightLeg
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:Spine1
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftShoulder
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightShoulder
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftForeArm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightForeArm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftHand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightHand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:LeftEye
+      humanName: LeftEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:RightEye
+      humanName: RightEye
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Test:Jaw
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: PC01_Kohaku01(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:GeoRoot
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:PC01_Kohaku
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -8.040613e-17, y: 0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:PC_01_Kohaku1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:Reference
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:Hips
+      position: {x: 6.897294e-10, y: -0.015779164, z: 0.62953776}
+      rotation: {x: 0.7071068, y: -0.0000009693778, z: -0.7071068, w: -0.0000009693778}
+      scale: {x: 1, y: 0.9999999, z: 0.9999999}
+      transformModified: 1
+    - name: Test:Spine
+      position: {x: -0.1295904, y: -0.00009106636, z: 0.00000019764913}
+      rotation: {x: -0.0000020927139, y: 0.0000007808391, z: -0.034967624, w: 0.99938846}
+      scale: {x: 1.0000004, y: 1.0000002, z: 1.0000002}
+      transformModified: 1
+    - name: Test:Spine1
+      position: {x: -0.11465355, y: -0.00010006427, z: -0.000000010662479}
+      rotation: {x: -0.000000017718778, y: -0.0000003104449, z: 0.13479675, w: 0.9908733}
+      scale: {x: 0.9999999, y: 0.99999976, z: 0.9999999}
+      transformModified: 1
+    - name: Test:Spine2
+      position: {x: -0.13041137, y: -0.00010416031, z: 0.000000019282888}
+      rotation: {x: -0.000000032669554, y: -0.00000034919304, z: 0.06432981, w: 0.9979287}
+      scale: {x: 1.0000002, y: 1.0000005, z: 1.0000002}
+      transformModified: 1
+    - name: Test:Neck
+      position: {x: -0.15268081, y: -0.0031092262, z: 0.00000001896995}
+      rotation: {x: 0.000000020075522, y: 0.000000270402, z: -0.1024611, w: 0.994737}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.99999976}
+      transformModified: 1
+    - name: Test:Head
+      position: {x: -0.06150055, y: 0, z: 0.000000025659974}
+      rotation: {x: -0.000000022819613, y: 0.00000028256622, z: -0.12899998, w: 0.9916446}
+      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000002}
+      transformModified: 1
+    - name: Test:LeftTale1
+      position: {x: 0.030754775, y: -0.09676822, z: 0.10129501}
+      rotation: {x: -0.14050166, y: -0.073776945, z: 0.98679286, w: 0.032498132}
+      scale: {x: 0.99999994, y: 1.0000005, z: 0.99999934}
+      transformModified: 1
+    - name: Test:LeftTale2
+      position: {x: -0.3879686, y: 0.00000034332274, z: -0.0000012207031}
+      rotation: {x: 0.059801523, y: -0.017068824, z: 0.059267104, w: 0.99630314}
+      scale: {x: 1.0000004, y: 1.0000004, z: 0.9999996}
+      transformModified: 1
+    - name: Test:LeftTale3
+      position: {x: -0.19411322, y: -0.000000114440915, z: -0.000001335144}
+      rotation: {x: 0.021567853, y: 0.00031119084, z: 0.07452892, w: 0.99698555}
+      scale: {x: 0.99999994, y: 1.0000002, z: 1.0000005}
+      transformModified: 1
+    - name: Test:LeftTale4
+      position: {x: -0.18327014, y: 0.000000057220458, z: -0.0000006866455}
+      rotation: {x: -0.050880875, y: 0.70578486, z: 0.006980679, w: 0.7065622}
+      scale: {x: 0.9999991, y: 1.0000006, z: 0.9999997}
+      transformModified: 1
+    - name: Test:Jaw
+      position: {x: -0.042979352, y: 0.028087748, z: 0.00000023001317}
+      rotation: {x: 0.70550156, y: 0.04761854, z: -0.70550156, w: 0.04761854}
+      scale: {x: 0.99999946, y: 0.9999999, z: 1}
+      transformModified: 1
+    - name: Test:RightTale1
+      position: {x: 0.030754928, y: -0.09676792, z: -0.101295315}
+      rotation: {x: 0.14050344, y: 0.073774636, z: 0.98679274, w: 0.03249871}
+      scale: {x: 1.0000019, y: 1.0000006, z: 0.9999998}
+      transformModified: 1
+    - name: Test:RightTale2
+      position: {x: -0.38796782, y: 0.00000072479247, z: 0.0000037384032}
+      rotation: {x: -0.059801415, y: 0.017075533, z: 0.059266318, w: 0.996303}
+      scale: {x: 0.99999917, y: 1.0000012, z: 1.0000038}
+      transformModified: 1
+    - name: Test:RightTale3
+      position: {x: -0.19411491, y: -0.000000076293944, z: 0.000000114440915}
+      rotation: {x: -0.02156683, y: -0.00032181697, z: 0.07452849, w: 0.9969856}
+      scale: {x: 0.99999624, y: 1.0000001, z: 1.0000039}
+      transformModified: 1
+    - name: Test:RightTale4
+      position: {x: -0.18327053, y: -0.00000028610228, z: 0.0000035476685}
+      rotation: {x: 0.050882496, y: -0.7057788, z: 0.0069815237, w: 0.7065682}
+      scale: {x: 1.0000035, y: 1.0000001, z: 0.999996}
+      transformModified: 1
+    - name: Test:LeftEye
+      position: {x: -0.08330047, y: -0.017302971, z: 0.058170054}
+      rotation: {x: 0.7133591, y: -0.7007987, z: -0.00000047085769, w: -0.00000045876925}
+      scale: {x: 0.9999996, y: 0.99999964, z: 0.9999997}
+      transformModified: 1
+    - name: Test:RightEye
+      position: {x: -0.08330063, y: -0.01730278, z: -0.058174852}
+      rotation: {x: 0.7133591, y: -0.7007987, z: -0.00000047085769, w: -0.00000045876925}
+      scale: {x: 0.9999996, y: 0.99999964, z: 0.9999997}
+      transformModified: 1
+    - name: Test:LeftRibbon1
+      position: {x: -0.27596655, y: 0.053312033, z: 0.0928185}
+      rotation: {x: -0.43782642, y: -0.26207554, z: 0.67916334, w: 0.5275998}
+      scale: {x: 0.99999946, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:LeftRibbon2
+      position: {x: -0.1561328, y: -0.000000076293944, z: 0.00000015258789}
+      rotation: {x: -0.51568407, y: 0.5872867, z: -0.3985562, w: -0.47991374}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+      transformModified: 1
+    - name: Test:RightRibbon1
+      position: {x: -0.2759661, y: 0.05331232, z: -0.09281739}
+      rotation: {x: 0.6853423, y: 0.68330896, z: 0.25106603, w: 0.018994223}
+      scale: {x: 0.9999998, y: 1.0000002, z: 0.9999999}
+      transformModified: 1
+    - name: Test:RightRibbon2
+      position: {x: -0.1561331, y: -0.00000015258789, z: -0.0000002670288}
+      rotation: {x: -0.1784592, y: 0.070974134, z: 0.7008617, w: 0.6869555}
+      scale: {x: 1.0000006, y: 1.0000004, z: 0.99999994}
+      transformModified: 1
+    - name: Test:LeftShoulder
+      position: {x: -0.10608566, y: -0.0019091605, z: 0.029466536}
+      rotation: {x: -0.6250843, y: -0.03693006, z: 0.7791392, w: 0.029119339}
+      scale: {x: 0.9999997, y: 0.9999997, z: 0.99999994}
+      transformModified: 1
+    - name: Test:LeftArm
+      position: {x: -0.08645228, y: 0.000000038146972, z: 0}
+      rotation: {x: 0.18683028, y: 0.09242193, z: 0.024411594, w: 0.9777304}
+      scale: {x: 0.9999999, y: 1, z: 0.9999999}
+      transformModified: 1
+    - name: Test:LeftForeArm
+      position: {x: -0.22445877, y: -0.0000000047683715, z: -0.000000076293944}
+      rotation: {x: -0.000000022093227, y: -0.00000005987685, z: 0.0121216215, w: 0.99992657}
+      scale: {x: 1.0000001, y: 0.9999999, z: 1.0000001}
+      transformModified: 1
+    - name: Test:LeftHand
+      position: {x: -0.22099178, y: 0.000000009536743, z: 0.00000015258789}
+      rotation: {x: -0.7506044, y: -0.08141338, z: -0.15716945, w: 0.63660246}
+      scale: {x: 0.99999994, y: 0.9999997, z: 0.99999994}
+      transformModified: 1
+    - name: Test:RightShoulder
+      position: {x: -0.10608558, y: -0.0019089889, z: -0.029466555}
+      rotation: {x: 0.62508416, y: 0.03692793, z: 0.77913946, w: 0.029117605}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
+      transformModified: 1
+    - name: Test:RightArm
+      position: {x: -0.086452276, y: 0.000000038146972, z: 0}
+      rotation: {x: -0.18683039, y: -0.092421, z: 0.024411386, w: 0.9777305}
+      scale: {x: 1.0000001, y: 1, z: 1}
+      transformModified: 1
+    - name: Test:RightForeArm
+      position: {x: -0.22445877, y: -0.000000047683713, z: 0.000000076293944}
+      rotation: {x: -0.000000018568848, y: 0.00000014879744, z: 0.012121663, w: 0.99992657}
+      scale: {x: 1.0000002, y: 0.99999976, z: 1.0000001}
+      transformModified: 1
+    - name: Test:RightHand
+      position: {x: -0.22099167, y: -0.0000000047683715, z: -0.000000076293944}
+      rotation: {x: 0.75060445, y: 0.08141297, z: -0.1571696, w: 0.6366024}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000004}
+      transformModified: 1
+    - name: Test:LeftSusoFront
+      position: {x: -0.089346424, y: 0.07710991, z: 0.09567279}
+      rotation: {x: 0.6041565, y: -0.09459688, z: 0.72236985, w: -0.3228441}
+      scale: {x: -1, y: -1.0000001, z: -1.0000001}
+      transformModified: 1
+    - name: Test:LeftSusoBack
+      position: {x: -0.103113055, y: -0.109199874, z: 0.07957833}
+      rotation: {x: -0.019557543, y: 0.6405338, z: -0.13691396, w: 0.7553732}
+      scale: {x: -1.0000001, y: -1.0000001, z: -1.0000002}
+      transformModified: 1
+    - name: Test:RightSusoFront
+      position: {x: -0.08934673, y: 0.07710937, z: -0.09567283}
+      rotation: {x: -0.60415465, y: 0.09459874, z: 0.7223703, w: -0.32284573}
+      scale: {x: -1, y: -1.0000005, z: -1.0000004}
+      transformModified: 1
+    - name: Test:RightSusoBack
+      position: {x: -0.103113286, y: -0.10920029, z: -0.07957731}
+      rotation: {x: 0.01955499, y: -0.6405329, z: -0.13691242, w: 0.7553742}
+      scale: {x: -1.0000001, y: -1, z: -1.0000002}
+      transformModified: 1
+    - name: Test:LeftUptLeg
+      position: {x: 0.00000015258789, y: 0.00000017523764, z: 0.10736133}
+      rotation: {x: 0.03228681, y: 0.99705213, z: 0.009185707, w: -0.06899475}
+      scale: {x: 1, y: 1.0000004, z: 1.0000002}
+      transformModified: 1
+    - name: Test:LeftLeg
+      position: {x: -0.27670237, y: -0.0000000047683715, z: 0.00000012874602}
+      rotation: {x: 0.000000023637172, y: 0.00000018745243, z: 0.042942073, w: 0.99907756}
+      scale: {x: 1.0000002, y: 1.0000001, z: 1.0000004}
+      transformModified: 1
+    - name: Test:LeftFoot
+      position: {x: -0.2718176, y: 0.000000014305114, z: 0.000000029802322}
+      rotation: {x: 0.0062151523, y: -0.06932506, z: -0.075072445, w: 0.99474597}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+      transformModified: 1
+    - name: Test:RightUpLeg
+      position: {x: -0.00000015258789, y: -0.00000012040138, z: -0.107361354}
+      rotation: {x: 0.03228457, y: 0.99705225, z: -0.009187272, w: 0.06899341}
+      scale: {x: 1, y: 0.9999996, z: 0.9999997}
+      transformModified: 1
+    - name: Test:RightLeg
+      position: {x: -0.2767024, y: -0.0000000047683715, z: 0.000000019073486}
+      rotation: {x: -6.692936e-10, y: 0.00000003725853, z: 0.04294315, w: 0.99907756}
+      scale: {x: 1.0000001, y: 1.0000004, z: 1.0000004}
+      transformModified: 1
+    - name: Test:RightFoot
+      position: {x: -0.27181754, y: -0.000000023841856, z: 0.000000026226044}
+      rotation: {x: -0.006215295, y: 0.069325075, z: -0.07507137, w: 0.9947461}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1}
+      transformModified: 1
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -156,7 +552,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
