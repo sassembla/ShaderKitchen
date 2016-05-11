@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: d8754c62c75c24cf4ab46e214806d48b
+timeCreated: 1462966874
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Test:GeoRoot
+    100004: Test:Head
+    100006: Test:Hips
+    100008: Test:Jaw
+    100010: Test:LeftArm
+    100012: Test:LeftEye
+    100014: Test:LeftFoot
+    100016: Test:LeftForeArm
+    100018: Test:LeftHand
+    100020: Test:LeftLeg
+    100022: Test:LeftRibbon1
+    100024: Test:LeftRibbon2
+    100026: Test:LeftShoulder
+    100028: Test:LeftSusoBack
+    100030: Test:LeftSusoFront
+    100032: Test:LeftTale1
+    100034: Test:LeftTale2
+    100036: Test:LeftTale3
+    100038: Test:LeftTale4
+    100040: Test:LeftUptLeg
+    100042: Test:Neck
+    100044: Test:PC01_Kohaku
+    100046: Test:PC_01_Kohaku1
+    100048: Test:Reference
+    100050: Test:RightArm
+    100052: Test:RightEye
+    100054: Test:RightFoot
+    100056: Test:RightForeArm
+    100058: Test:RightHand
+    100060: Test:RightLeg
+    100062: Test:RightRibbon1
+    100064: Test:RightRibbon2
+    100066: Test:RightShoulder
+    100068: Test:RightSusoBack
+    100070: Test:RightSusoFront
+    100072: Test:RightTale1
+    100074: Test:RightTale2
+    100076: Test:RightTale3
+    100078: Test:RightTale4
+    100080: Test:RightUpLeg
+    100082: Test:Spine
+    100084: Test:Spine1
+    100086: Test:Spine2
+    400000: //RootNode
+    400002: Test:GeoRoot
+    400004: Test:Head
+    400006: Test:Hips
+    400008: Test:Jaw
+    400010: Test:LeftArm
+    400012: Test:LeftEye
+    400014: Test:LeftFoot
+    400016: Test:LeftForeArm
+    400018: Test:LeftHand
+    400020: Test:LeftLeg
+    400022: Test:LeftRibbon1
+    400024: Test:LeftRibbon2
+    400026: Test:LeftShoulder
+    400028: Test:LeftSusoBack
+    400030: Test:LeftSusoFront
+    400032: Test:LeftTale1
+    400034: Test:LeftTale2
+    400036: Test:LeftTale3
+    400038: Test:LeftTale4
+    400040: Test:LeftUptLeg
+    400042: Test:Neck
+    400044: Test:PC01_Kohaku
+    400046: Test:PC_01_Kohaku1
+    400048: Test:Reference
+    400050: Test:RightArm
+    400052: Test:RightEye
+    400054: Test:RightFoot
+    400056: Test:RightForeArm
+    400058: Test:RightHand
+    400060: Test:RightLeg
+    400062: Test:RightRibbon1
+    400064: Test:RightRibbon2
+    400066: Test:RightShoulder
+    400068: Test:RightSusoBack
+    400070: Test:RightSusoFront
+    400072: Test:RightTale1
+    400074: Test:RightTale2
+    400076: Test:RightTale3
+    400078: Test:RightTale4
+    400080: Test:RightUpLeg
+    400082: Test:Spine
+    400084: Test:Spine1
+    400086: Test:Spine2
+    4300000: Test:PC_01_Kohaku1
+    4300002: Test:PC01_Kohaku
+    9500000: //RootNode
+    13700000: Test:PC01_Kohaku
+    13700002: Test:PC_01_Kohaku1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 180
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
