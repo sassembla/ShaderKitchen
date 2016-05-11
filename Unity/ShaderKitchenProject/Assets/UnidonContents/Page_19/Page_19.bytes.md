@@ -1,4 +1,11 @@
-﻿Shader "ShaderKitchen/SK_Char"
+##ShaderKitchen Shader
+ローコストで見栄えの良いよくある処理をまとめたシェーダーです<br>
+初歩的な計算が多いわりに、実用性もあるかと思います<br>
+<br>
+ソースを見ていきましょう<br>
+
+```
+Shader "ShaderKitchen/SK_Char"
 {
 	Properties
 	{
@@ -23,7 +30,10 @@
 	{
 		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 		LOD 200
+```
+ここからアウトラインを描画しています<br>
 
+```
 		Pass{
 			//outline
 			Cull Front
@@ -56,7 +66,6 @@
 				fixed4 norm = mul(UNITY_MATRIX_IT_MV,v.normal);
 				fixed2 offset = TransformViewToProjection(norm.xy);
 
-				//o.pos.xy += offset*o.pos.z*_Outline;
 				o.pos.xy += offset*_Outline;
 
 				o.uv = TRANSFORM_TEX(v.uv,_MainTex);
@@ -71,8 +80,11 @@
 			}
 			ENDCG
 		}
+```
+ここからメインの描画<br>
+アウトラインが必要ない場合は上のPassは消してしまっても動きます<br>
 
-
+```
 		Pass{
 			//Main draw
 			CGPROGRAM
@@ -110,7 +122,14 @@
 				fixed4 viewDir : COLOR;
 				fixed4 headVec : COLOR1;
 			};
+```
+VertexShaderの中で以下の情報をfragmentに渡すために定義しています<br>
+o.texcoord にUV情報<br>
+o.headVecに頂点の位置<br>
+o.viewDirにオブジェクトから見たカメラの向き<br>
+o.normalに頂点の法線<br>
 
+```
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -123,7 +142,24 @@
 
 				return o;
 			}
+```
+fragment Shaderで一つ一つ処理していきます<br>
+<br>
+fixed rampUV = saturate(dot(_LightVector,normalDirection));<br>
+これで、ライトのベクトルと、頂点の法線のベクトルの差を取り出しています（Lambert）<br>
+<br>
+fixed4 toonColor = tex2D(_RampTex,float2(rampUV,rampUV))<br>
+ここで取り出したベクトルの差分だけToonで設定したテクスチャ画像のピクセルを取り出しています。　*0.5+0.5は取り出したカラーが黒だと濃すぎるので薄めているだけです<br>
+<br>
+ fixed RimValue = pow(1.0 - dot(i.normal , i.viewDir),_RimRange);<br>
+ fixed4 RimColor = smoothstep(1.0 - _RimPower, 1.0 ,RimValue) * (c * _RimAlpha);<br>
+頂点の法線ベクトルと、頂点からカメラへのベクトルの差分を取り（RimValue)<br>
+差分の値を元にRimの色を決めています（RimColor)<br>
+i.viewDir.y += _RimAdjust;<br>
+この位置行は、カメラへの法線ベクトルを上にずらすことで、Rimの影響を傾けています。<br>
+<br>
 
+```
 			fixed4 frag(v2f i) : SV_Target
 			{
 				fixed4 c = tex2D(_MainTex , i.texcoord) * _Color;
@@ -156,3 +192,4 @@
 	}
 	Fallback "VertexLit"
 }
+```

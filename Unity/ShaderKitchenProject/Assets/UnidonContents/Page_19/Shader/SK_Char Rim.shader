@@ -1,4 +1,4 @@
-﻿Shader "Unlit/SK_Char2"
+﻿Shader "ShaderKitchen/SK_Char2"
 {
 	Properties
 	{
