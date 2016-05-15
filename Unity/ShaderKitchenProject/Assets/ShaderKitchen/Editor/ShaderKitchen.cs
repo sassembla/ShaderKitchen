@@ -85,7 +85,7 @@ namespace ShaderKitchen {
 			if (frame == 0) {
 				var cameraObject = GameObject.Find("Main Camera");
 				if (cameraObject == null) {
-					CaptureAborted();
+					CaptureAborted("no Main Camera found. please check camera GameObject name.");
 					return;
 				}
 				 
@@ -121,11 +121,11 @@ namespace ShaderKitchen {
 			frame++;
 		}
 		
-		private static void CaptureAborted () {
+		private static void CaptureAborted (string reason) {
 			EditorApplication.update -= Update;
 			dataStruct.recording = false;
 			Save();
-			Debug.LogError("recording aborted.");
+			Debug.LogError("recording aborted. reason:" + reason);
 		}
 		
 		private static void Load () {
