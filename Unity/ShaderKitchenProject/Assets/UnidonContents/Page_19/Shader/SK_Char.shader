@@ -41,7 +41,7 @@
 			struct appdata{
 				fixed4 vertex : POSITION;
 				fixed2 uv : TEXCOORD0;
-				fixed3 normal : NORMAL;
+				fixed4 normal : NORMAL;
 			};
 
 			struct v2f{
@@ -53,7 +53,7 @@
 			{
 				v2f o;
 				o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
-				fixed4 norm = mul(UNITY_MATRIX_IT_MV,v.normal);
+				fixed4 norm = mul(UNITY_MATRIX_IT_MV,v.normal.xyz);
 				fixed2 offset = TransformViewToProjection(norm.xy);
 
 				//o.pos.xy += offset*o.pos.z*_Outline;
