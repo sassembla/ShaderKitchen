@@ -82,9 +82,14 @@ namespace ShaderKitchen {
 		
 		private static void Update () {
 			if (ShaderKitchenSettings.MAX_SCREENSHOT_FRAME < frame) return;
-			
 			if (frame == 0) {
-				camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+				var cameraObject = GameObject.Find("Main Camera");
+				if (cameraObject == null) {
+					CaptureAborted();
+					return;
+				}
+				 
+				camera = cameraObject.GetComponent<Camera>();
 				if (screenshotWidth == 0) screenshotWidth = camera.pixelWidth;
 				if (screenshotHeight == 0) screenshotHeight = camera.pixelHeight;
 			}
@@ -114,6 +119,13 @@ namespace ShaderKitchen {
 			var t = CaptureScreenshot(camera);
 			shots[frame] = t;
 			frame++;
+		}
+		
+		private static void CaptureAborted () {
+			EditorApplication.update -= Update;
+			dataStruct.recording = false;
+			Save();
+			Debug.LogError("recording aborted.");
 		}
 		
 		private static void Load () {
