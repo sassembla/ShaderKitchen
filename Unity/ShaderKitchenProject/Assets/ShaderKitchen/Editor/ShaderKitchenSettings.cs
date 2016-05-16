@@ -20,6 +20,7 @@ namespace ShaderKitchen {
 		public const string SCREENSHOT_PATH = "Assets/ShaderKitchen/Editor/ScreenTemp";
 		
 		public const string GUI_MENU_RECORDING = "ShaderKitchen/Record";
+		public const string GUI_MENU_FRAMEDEBUGGER = "ShaderKitchen/FrameDebugger";
 		
 		public const string GUI_MENU_EXPORTPACKAGE = "ShaderKitchen/Export package(test)";
 		public const bool IGNORE_META = true;

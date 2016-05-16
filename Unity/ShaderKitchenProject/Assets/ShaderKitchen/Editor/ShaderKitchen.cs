@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ShaderKitchen {
 
@@ -51,6 +52,57 @@ namespace ShaderKitchen {
 			EditorApplication.isPlaying = true;
 		}
 		
+		[MenuItem(ShaderKitchenSettings.GUI_MENU_FRAMEDEBUGGER, false, 1)] public static void ChangeMode () {
+			// these method information is based on http://clock-up.jp/unity-index/UnityEditor_5.3.0f4.html
+			var unityEditorAssembly = typeof(AssetImporter).Assembly;
+			
+			
+			var frameDebuggerUtilType = unityEditorAssembly.GetType("UnityEditorInternal.FrameDebuggerUtility");
+			
+			// activate FrameDebugger.
+			var frameDebuggerWindowType = unityEditorAssembly.GetType("UnityEditor.FrameDebuggerWindow");
+			EditorWindow.FocusWindowIfItsOpen(frameDebuggerWindowType);
+			
+			
+			// set FrameDebugger enabled.
+			frameDebuggerUtilType.GetMethod(
+				"SetEnabled",
+				BindingFlags.Static | BindingFlags.Public,
+				null,
+				new System.Type[] {typeof(bool), typeof(int)},
+				null
+			).Invoke(null, new object[]{true, 10});
+			
+			
+			
+			var frameDebuggerWinInstance = EditorWindow.GetWindow(frameDebuggerWindowType);
+			// このウィンドウから、m_Treeにアクセスして、そのインスタンスで下記のメソッドをぶったたける気がする。
+			
+			var frameDebuggerTreeViewType = unityEditorAssembly.GetType("UnityEditorInternal.FrameDebuggerTreeView");
+			foreach (var item in frameDebuggerTreeViewType.GetMethods()){
+				Debug.LogError("item:" + item);
+				if (item.ToString() == "Void SelectFrameEventIndex(Int32)") {
+					item.Invoke(null, new object[]{4});
+				} 
+			}
+			
+			var s = frameDebuggerTreeViewType.GetMethod(
+				"SelectFrameEventIndex", BindingFlags.Public
+			);//.Invoke(FrameDebuggerWinInstance, new object[]{4});
+			Debug.LogError("s:" + s);
+			// ChangeFrameEventLimit(int newLimit) を呼べばいけそう。
+			
+			
+			// foreach (var p in FrameDebuggerUtil.GetProperties()) {
+			// 	Debug.LogError("p:" + p);
+			// }
+			// var s = FrameDebuggerUtil.GetProperty(
+			// 	"count",
+			// 	BindingFlags.Static | BindingFlags.Public
+			// );
+			// Debug.LogError("s:" + s);
+			// s.SetValue(null, Convert.ChangeType(1, s.PropertyType), null);
+		}
 		
 		private static int frame;
 		private static int screenshotWidth;
