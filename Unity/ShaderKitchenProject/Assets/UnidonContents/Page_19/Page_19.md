@@ -30,12 +30,10 @@ Shader "ShaderKitchen/SK_Char"
 	{
 		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 		LOD 200
+```
+ここからアウトラインを描画しています<br>
 
-		↓こんな感じの書き方どうですかね。章(アンカー)を展開できるようにして、クリックで次の章まで閉じられるようにしたり、含んでいる
-			シェーダの一覧を出したり。下の方で(Lambert)とか書いてある部分をタグみたいに見せるとか。
-		// [Chapter:Outline]
-		// ここからアウトラインを描画しています
-
+```
 		Pass{
 			//outline
 			Cull Front
@@ -82,12 +80,11 @@ Shader "ShaderKitchen/SK_Char"
 			}
 			ENDCG
 		}
+```
+ここからメインの描画<br>
+アウトラインが必要ない場合は上のPassは消してしまっても動きます<br>
 
-		// Chapter:Main
-		// ここからメインの描画
-		// アウトラインが必要ない場合は上のPassは消してしまっても動きます
-
-
+```
 		Pass{
 			//Main draw
 			CGPROGRAM
@@ -125,14 +122,14 @@ Shader "ShaderKitchen/SK_Char"
 				fixed4 viewDir : COLOR;
 				fixed4 headVec : COLOR1;
 			};
+```
+VertexShaderの中で以下の情報をfragmentに渡すために定義しています<br>
+o.texcoord にUV情報<br>
+o.headVecに頂点の位置<br>
+o.viewDirにオブジェクトから見たカメラの向き<br>
+o.normalに頂点の法線<br>
 
-			// Chapter:Fragment
-			// VertexShaderの中で以下の情報をfragmentに渡すために定義しています
-			// o.texcoord にUV情報
-			// o.headVecに頂点の位置
-			// o.viewDirにオブジェクトから見たカメラの向き
-			// o.normalに頂点の法線
-
+```
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -145,24 +142,24 @@ Shader "ShaderKitchen/SK_Char"
 
 				return o;
 			}
+```
+fragment Shaderで一つ一つ処理していきます<br>
+<br>
+fixed rampUV = saturate(dot(_LightVector,normalDirection));<br>
+これで、ライトのベクトルと、頂点の法線のベクトルの差を取り出しています（Lambert）<br>
+<br>
+fixed4 toonColor = tex2D(_RampTex,float2(rampUV,rampUV))<br>
+ここで取り出したベクトルの差分だけToonで設定したテクスチャ画像のピクセルを取り出しています。　*0.5+0.5は取り出したカラーが黒だと濃すぎるので薄めているだけです<br>
+<br>
+ fixed RimValue = pow(1.0 - dot(i.normal , i.viewDir),_RimRange);<br>
+ fixed4 RimColor = smoothstep(1.0 - _RimPower, 1.0 ,RimValue) * (c * _RimAlpha);<br>
+頂点の法線ベクトルと、頂点からカメラへのベクトルの差分を取り（RimValue)<br>
+差分の値を元にRimの色を決めています（RimColor)<br>
+i.viewDir.y += _RimAdjust;<br>
+この位置行は、カメラへの法線ベクトルを上にずらすことで、Rimの影響を傾けています。<br>
+<br>
 
-			// Chapter:Fragment2
-			// fragment Shaderで一つ一つ処理していきます
-
-			fixed rampUV = saturate(dot(_LightVector,normalDirection));
-			// これで、ライトのベクトルと、頂点の法線のベクトルの差を取り出しています（Lambert）<-この表記に、リンクつけたいですね。　記法考えるか。すっごく良い。
-
-			fixed4 toonColor = tex2D(_RampTex,float2(rampUV,rampUV))
-			// ここで取り出したベクトルの差分だけToonで設定したテクスチャ画像のピクセルを取り出しています。　*0.5+0.5は取り出したカラーが黒だと濃すぎるので薄めているだけです
-
-			fixed RimValue = pow(1.0 - dot(i.normal , i.viewDir),_RimRange);
-			fixed4 RimColor = smoothstep(1.0 - _RimPower, 1.0 ,RimValue) * (c * _RimAlpha);
-			// 頂点の法線ベクトルと、頂点からカメラへのベクトルの差分を取り（RimValue)
-			// 差分の値を元にRimの色を決めています（RimColor)
-			// i.viewDir.y += _RimAdjust;
-			// この位置行は、カメラへの法線ベクトルを上にずらすことで、Rimの影響を傾けています。
-
-
+```
 			fixed4 frag(v2f i) : SV_Target
 			{
 				fixed4 c = tex2D(_MainTex , i.texcoord) * _Color;
