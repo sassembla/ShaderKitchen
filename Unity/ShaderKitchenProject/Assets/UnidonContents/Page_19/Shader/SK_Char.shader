@@ -24,6 +24,7 @@
 		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 		LOD 200
 
+
 		Pass{
 			//outline
 			Cull Front
@@ -153,6 +154,39 @@
 
 			ENDCG
 		}
+
+		//ShadowCaster DefaultVertexLitより		
+		Pass		
+		{		
+			Name "ShadowCaster"	
+			Tags{ "LightMode" = "ShadowCaster" }	
+
+			Fog { Mode Off }
+			ZWrite On ZTest LEqual Cull Off
+					
+			CGPROGRAM	
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile_shadowcaster
+			#include "UnityCG.cginc"
+
+			struct v2f {	
+				V2F_SHADOW_CASTER;
+			};	
+				
+			v2f vert(appdata_base v)	
+			{	
+				v2f o;
+				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+				return o;
+			}	
+				
+			float4 frag(v2f i) : COLOR
+			{	
+				SHADOW_CASTER_FRAGMENT(i)
+			}	
+			ENDCG	
+		}
 	}
-	Fallback "VertexLit"
+	FallBack Off
 }
