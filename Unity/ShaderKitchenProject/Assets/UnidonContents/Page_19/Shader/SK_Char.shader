@@ -21,11 +21,10 @@
 
 	SubShader
 	{
-		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 		LOD 200
 
-
 		Pass{
+			Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 			//outline
 			Cull Front
 			CGPROGRAM
@@ -75,6 +74,7 @@
 
 
 		Pass{
+			Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 			//Main draw
 			CGPROGRAM
 
