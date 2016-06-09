@@ -25,15 +25,13 @@ Shader "ShaderKitchen/SK_Char"
 		_OutlineColor ("Outline Color", Color) = (0,0,0,1)//アウトラインの色
 		_Outline ("Outline width", Range (0.0, 0.03)) = .005//アウトラインの太さ
 	}
-
+	
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 		LOD 200
 
-		↓こんな感じの書き方どうですかね。章(アンカー)を展開できるようにして、クリックで次の章まで閉じられるようにしたり、含んでいる
-			シェーダの一覧を出したり。下の方で(Lambert)とか書いてある部分をタグみたいに見せるとか。
-		// [Chapter:Outline]
+		// [outline:なんかアクション的なオプション指定の文字列 x N]->
 		// ここからアウトラインを描画しています
 
 		Pass{
@@ -83,7 +81,10 @@ Shader "ShaderKitchen/SK_Char"
 			ENDCG
 		}
 
-		// Chapter:Main
+		// <-outline
+
+
+		// [Main:なんかアクション的なオプション指定の文字列 x N]->
 		// ここからメインの描画
 		// アウトラインが必要ない場合は上のPassは消してしまっても動きます
 
@@ -126,7 +127,8 @@ Shader "ShaderKitchen/SK_Char"
 				fixed4 headVec : COLOR1;
 			};
 
-			// Chapter:Fragment
+			// [Fragment:なんかアクション的なオプション指定の文字列 x N]->
+
 			// VertexShaderの中で以下の情報をfragmentに渡すために定義しています
 			// o.texcoord にUV情報
 			// o.headVecに頂点の位置
@@ -146,7 +148,12 @@ Shader "ShaderKitchen/SK_Char"
 				return o;
 			}
 
-			// Chapter:Fragment2
+			// <-Fragment
+
+
+
+			// [Fragment2:なんかアクション的なオプション指定の文字列 x N]->
+
 			// fragment Shaderで一つ一つ処理していきます
 
 			fixed rampUV = saturate(dot(_LightVector,normalDirection));
@@ -190,8 +197,12 @@ Shader "ShaderKitchen/SK_Char"
 				return c;
 			}
 
+			// <-Fragment2
+
 			ENDCG
 		}
+
+		// <-Main
 	}
 	Fallback "VertexLit"
 }

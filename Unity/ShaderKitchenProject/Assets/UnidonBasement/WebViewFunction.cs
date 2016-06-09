@@ -9,6 +9,9 @@ namespace Unidon {
 		private static Markdown markdownSharp = new Markdown();
 		
 		public static string MarkdownToRichText (string markdown) {
+			// この時点で、なんか表示されないような抜け道を用意すべきなのか。
+			// 
+
 			var html = markdownSharp.Transform(markdown);
 			
 			var richtext = HTMLToRichText(html);
@@ -26,8 +29,7 @@ namespace Unidon {
 			.Replace("<h2>", "<size=30>").Replace("</h2>", "</size>")
 			.Replace("<pre><code class=\"language-\">", "").Replace("</code></pre>", "")
 			.Replace("/**/", "")
-			
-			
+
 			/*
 				word tagging
 			*/
