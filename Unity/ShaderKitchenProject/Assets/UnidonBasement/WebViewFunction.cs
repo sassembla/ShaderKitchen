@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using MarkdownSharp;
 using UnityEngine;
 
@@ -10,13 +11,101 @@ namespace Unidon {
 		
 		public static string MarkdownToRichText (string markdown) {
 			// この時点で、なんか表示されないような抜け道を用意すべきなのか。
-			// 
+			// point Mapを返そう。列として空白にするけど、行数と開始-終了位置の情報は持つ。
+			var modifiedMarkdownAndPointInfos = GetOperatablePointInfos(markdown);
 
-			var html = markdownSharp.Transform(markdown);
+			var html = markdownSharp.Transform(modifiedMarkdownAndPointInfos.modifiedMarkdown);
 			
 			var richtext = HTMLToRichText(html);
 			
 			return richtext;
+		}
+
+		private struct MarkdownAndPointInfos {
+			public string modifiedMarkdown;
+			public List<PointInfo> pointInfos;
+
+			public MarkdownAndPointInfos (string modifiedMarkdown, List<PointInfo> pointInfos) {
+				this.modifiedMarkdown = modifiedMarkdown;
+				this.pointInfos = pointInfos;
+			}
+		}
+
+		public struct PointInfo {
+			public string id;
+			public int startLineCount;
+			public int endLineCount;
+			// この辺にオプションの種類を列挙したものと、あたいとかを持ちたい。
+
+			public PointInfo (string id, int startLineCount, int endLineCount, string options) {
+				this.id = id;
+				this.startLineCount = startLineCount;
+				this.endLineCount = endLineCount;
+				Debug.LogError("まだオプションどうしようか考えてない。");
+			}
+		}
+
+		private struct IdentifierAndOptions {
+			public string identifier;
+			public string options;
+			public int startLine;
+
+			public IdentifierAndOptions (string identifier, string options, int startLine) {
+				this.identifier = identifier;
+				this.options = options;
+				this.startLine = startLine;
+			}
+		}
+
+		private static MarkdownAndPointInfos GetOperatablePointInfos (string sourceMarkdown) {
+			var pointInfos = new List<PointInfo>();
+
+			// 行に分解して、対象となるペアを見つけて、ってやっていく。ポイントはオープンとエンドがあるはずで、
+			// なんかいい見つけ方があった気がする、あー貯めてくやつだ。
+			var lines = sourceMarkdown.Split('\n');
+			
+			/*
+				parse operatable identifier.
+			*/
+			var identifierAndOptions = new List<IdentifierAndOptions>();
+			var start = new Regex(@".*// [[](.*):(.*)[]]->");
+			var end = new Regex(@".*// <-(.*)");
+
+			for (var i = 0; i < lines.Length; i++) {
+				var line = lines[i];
+
+				// detect start of operatable.
+				var startMatch = start.Match(line);
+				if (startMatch.Success) {
+					var identifier = startMatch.Groups[0].Value;
+					var options = startMatch.Groups[1].Value;
+					
+					identifierAndOptions.Add(new IdentifierAndOptions(identifier, options, i));
+					Debug.LogError("match:" + startMatch.Groups[1].Value);
+				}
+
+				// detect end of operatable.
+				var endMatch = end.Match(line);
+				if (endMatch.Success) {
+					var identifier = endMatch.Groups[0].Value;
+					var index = identifierAndOptions.FindIndex(record => record.identifier == identifier);
+					
+					if (index == -1) continue;
+
+					/*
+						same start identifier found.
+					*/
+					
+					var startLine = identifierAndOptions[index].startLine;
+					var endLine = i;
+					var options = identifierAndOptions[index].options;
+
+					pointInfos.Add(new PointInfo(identifier, startLine, endLine, options));
+				}
+
+			}
+
+			return new MarkdownAndPointInfos(sourceMarkdown, pointInfos);
 		}
 		
 		private static string HTMLToRichText (string html) {
