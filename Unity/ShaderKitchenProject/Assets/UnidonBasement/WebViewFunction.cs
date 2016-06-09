@@ -10,8 +10,6 @@ namespace Unidon {
 		private static Markdown markdownSharp = new Markdown();
 		
 		public static string MarkdownToRichText (string markdown) {
-			// この時点で、なんか表示されないような抜け道を用意すべきなのか。
-			// point Mapを返そう。列として空白にするけど、行数と開始-終了位置の情報は持つ。
 			var modifiedMarkdownAndPointInfos = GetOperatablePointInfos(markdown);
 
 			var html = markdownSharp.Transform(modifiedMarkdownAndPointInfos.modifiedMarkdown);
@@ -35,7 +33,7 @@ namespace Unidon {
 			public string id;
 			public int startLineCount;
 			public int endLineCount;
-			// この辺にオプションの種類を列挙したものと、あたいとかを持ちたい。
+			// この辺にオプションの種類を列挙したものと、パラメータとかを持ちたい。
 
 			public PointInfo (string id, int startLineCount, int endLineCount, string options) {
 				this.id = id;
@@ -60,8 +58,6 @@ namespace Unidon {
 		private static MarkdownAndPointInfos GetOperatablePointInfos (string sourceMarkdown) {
 			var pointInfos = new List<PointInfo>();
 
-			// 行に分解して、対象となるペアを見つけて、ってやっていく。ポイントはオープンとエンドがあるはずで、
-			// なんかいい見つけ方があった気がする、あー貯めてくやつだ。
 			var lines = sourceMarkdown.Split('\n');
 			
 			/*
@@ -101,10 +97,16 @@ namespace Unidon {
 					var options = identifierAndOptions[index].options;
 
 					pointInfos.Add(new PointInfo(identifier, startLine, endLine, options));
-				}
 
+					/*
+						replace target line of markdown.
+					*/
+					
+
+				}
 			}
 
+			
 			return new MarkdownAndPointInfos(sourceMarkdown, pointInfos);
 		}
 		
