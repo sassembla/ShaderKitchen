@@ -11,7 +11,7 @@ namespace Unidon {
 		
 		public static string MarkdownToRichText (string markdown) {
 			var modifiedMarkdownAndPointInfos = GetOperatablePointInfos(markdown);
-
+			// この時点でポイントが見えてる。
 			var html = markdownSharp.Transform(modifiedMarkdownAndPointInfos.modifiedMarkdown);
 			
 			var richtext = HTMLToRichText(html);
@@ -33,13 +33,15 @@ namespace Unidon {
 			public string id;
 			public int startLineCount;
 			public int endLineCount;
-			// この辺にオプションの種類を列挙したものと、パラメータとかを持ちたい。
+			// この辺にオプションの種類を列挙したものと、そのオプションのパラメータとかを持ちたい。具体的には
+			// 押したら何か起きる、とか。
+			// 閉じる、とかもその一種でありたい。
 
 			public PointInfo (string id, int startLineCount, int endLineCount, string options) {
 				this.id = id;
 				this.startLineCount = startLineCount;
 				this.endLineCount = endLineCount;
-				Debug.LogError("まだオプションどうしようか考えてない。");
+				Debug.LogWarning("まだオプションどうしようか考えてない。");
 			}
 		}
 
@@ -64,8 +66,8 @@ namespace Unidon {
 				parse operatable identifier.
 			*/
 			var identifierAndOptions = new List<IdentifierAndOptions>();
-			var start = new Regex(@".*// [[](.*):(.*)[]]->");
-			var end = new Regex(@".*// <-(.*)");
+			var start = new Regex(@".*[[](.*):(.*)[]]->");
+			var end = new Regex(@".*<-(.*)");
 
 			for (var i = 0; i < lines.Length; i++) {
 				var line = lines[i];
@@ -73,12 +75,11 @@ namespace Unidon {
 				// detect start of operatable.
 				var startMatch = start.Match(line);
 				if (startMatch.Success) {
-					var identifier = startMatch.Groups[0].Value;
-					var options = startMatch.Groups[1].Value;
+					var identifier = startMatch.Groups[1].Value;
+					var options = startMatch.Groups[2].Value;
 					
 					identifierAndOptions.Add(new IdentifierAndOptions(identifier, options, i));
-					Debug.LogError("match:" + startMatch.Groups[1].Value + " で、実際にこの行の文字列をいじらんとな。コメントごと消す。");
-
+					
 					/*
 						replace line.
 					*/
@@ -88,10 +89,11 @@ namespace Unidon {
 				// detect end of operatable.
 				var endMatch = end.Match(line);
 				if (endMatch.Success) {
-					var identifier = endMatch.Groups[0].Value;
+					var identifier = endMatch.Groups[1].Value;
+					
 					var index = identifierAndOptions.FindIndex(record => record.identifier == identifier);
 					
-					if (index == -1) continue;
+					if (index == -1) continue;// no same identifier found! maybe syntax error.
 
 					/*
 						same start identifier found.
@@ -118,12 +120,12 @@ namespace Unidon {
 			var lines = html.Replace("<br>", "\n")
 			
 			/*
-				基礎サイズとか
+				基礎サイズとかの設定
 			*/
-			.Replace("<p>", "").Replace("</p>", "")
+			.Replace("<p>", string.Empty).Replace("</p>", string.Empty)
 			.Replace("<h2>", "<size=30>").Replace("</h2>", "</size>")
-			.Replace("<pre><code class=\"language-\">", "").Replace("</code></pre>", "")
-			.Replace("/**/", "")
+			.Replace("<pre><code class=\"language-\">", string.Empty).Replace("</code></pre>", string.Empty)
+			.Replace("/**/", string.Empty)
 
 			/*
 				word tagging

@@ -25,7 +25,7 @@ Shader "ShaderKitchen/SK_Char"
 		_OutlineColor ("Outline Color", Color) = (0,0,0,1)//アウトラインの色
 		_Outline ("Outline width", Range (0.0, 0.03)) = .005//アウトラインの太さ
 	}
-	
+
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
@@ -82,7 +82,6 @@ Shader "ShaderKitchen/SK_Char"
 		}
 
 		// <-outline
-
 
 		// [Main:なんかアクション的なオプション指定の文字列 x N]->
 		// ここからメインの描画
