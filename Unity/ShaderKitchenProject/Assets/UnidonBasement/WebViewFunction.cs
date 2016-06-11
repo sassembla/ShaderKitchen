@@ -77,7 +77,12 @@ namespace Unidon {
 					var options = startMatch.Groups[1].Value;
 					
 					identifierAndOptions.Add(new IdentifierAndOptions(identifier, options, i));
-					Debug.LogError("match:" + startMatch.Groups[1].Value);
+					Debug.LogError("match:" + startMatch.Groups[1].Value + " で、実際にこの行の文字列をいじらんとな。コメントごと消す。");
+
+					/*
+						replace line.
+					*/
+					lines[i] = string.Empty;
 				}
 
 				// detect end of operatable.
@@ -101,13 +106,12 @@ namespace Unidon {
 					/*
 						replace target line of markdown.
 					*/
-					
-
+					lines[i] = string.Empty;
 				}
 			}
-
+			var modifiedMarkdown = string.Join("\n", lines);
 			
-			return new MarkdownAndPointInfos(sourceMarkdown, pointInfos);
+			return new MarkdownAndPointInfos(modifiedMarkdown, pointInfos);
 		}
 		
 		private static string HTMLToRichText (string html) {
