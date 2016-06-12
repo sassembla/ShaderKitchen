@@ -31,7 +31,7 @@ Shader "ShaderKitchen/SK_Char"
 		Tags { "RenderType"="Opaque" "LightMode" = "ForwardBase"}
 		LOD 200
 
-		// [outline:なんかアクション的なオプション指定の文字列 x N]->
+		// [Outline:なんかアクション的なオプション指定の文字列 x N]->
 		// ここからアウトラインを描画しています
 
 		Pass{
