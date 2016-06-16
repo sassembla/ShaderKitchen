@@ -85,9 +85,6 @@ namespace MyUnityEngine.UI
         protected Text m_TextComponent;
 
         [SerializeField]
-        protected Graphic m_Placeholder;
-
-        [SerializeField]
         private ContentType m_ContentType = ContentType.Standard;
 
         /// <summary>
@@ -271,19 +268,20 @@ namespace MyUnityEngine.UI
         /// </summary>
         public string text {
             get {
-				Debug.LogError("get! m_Text:" + m_Text);
-				m_Text = "here comes";
+				Debug.Log("get! m_Text:" + m_Text);
+				m_Text = "here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n"
+                 + "here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n";
                 return m_Text;
             }
             set {
-				Debug.LogError("set! text:" + value);
+				Debug.Log("set! text:" + value);
                 if (this.text == value) return;
 
                 if (m_LineType == LineType.SingleLine) m_Text = m_Text.Replace("\n", "").Replace("\t", "");
 
                 // If we have an input validator, validate the input and apply the character limit at the same time.
                 if (onValidateInput != null || characterValidation != CharacterValidation.None) {
-					Debug.LogError("m_Textがempにされてる");
+					Debug.Log("m_Textがempにされてる");
                     m_Text = string.Empty;
                     OnValidateInput validatorMethod = onValidateInput ?? Validate;
                     m_CaretPosition = m_CaretSelectPosition = value.Length;
@@ -335,8 +333,6 @@ namespace MyUnityEngine.UI
         public int caretWidth { get { return m_CaretWidth; } set { if (SetPropertyUtility.SetStruct(ref m_CaretWidth, value)) MarkGeometryAsDirty(); } }
 
         public Text textComponent { get { return m_TextComponent; } set { SetPropertyUtility.SetClass(ref m_TextComponent, value); } }
-
-        public Graphic placeholder { get { return m_Placeholder; } set { SetPropertyUtility.SetClass(ref m_Placeholder, value); } }
 
         public Color caretColor { get { return customCaretColor ? m_CaretColor : textComponent.color; } set { if (SetPropertyUtility.SetColor(ref m_CaretColor, value)) MarkGeometryAsDirty(); } }
 
@@ -473,7 +469,7 @@ namespace MyUnityEngine.UI
 				
 				m_Text = string.Empty;
 			} else {
-				Debug.LogError("onEna!:" + m_Text);// これは空っぽってことになってるっぽい。
+				Debug.Log("onEna!:" + m_Text);// これは空っぽってことになってるっぽい。
 			}
             
 
@@ -485,12 +481,12 @@ namespace MyUnityEngine.UI
 			
 			if (m_TextComponent != null)
             {
-				Debug.LogError("OnEnable2");
+				Debug.Log("OnEnable2");
                 m_TextComponent.RegisterDirtyVerticesCallback(MarkGeometryAsDirty);
                 m_TextComponent.RegisterDirtyVerticesCallback(UpdateLabel);
                 UpdateLabel();
             } else {
-				Debug.LogError("or OnEnable3");
+				Debug.Log("or OnEnable3");
 			}
         }
 
@@ -1507,8 +1503,6 @@ namespace MyUnityEngine.UI
 
                 bool isEmpty = string.IsNullOrEmpty(fullText);
 
-                if (m_Placeholder != null) m_Placeholder.enabled = isEmpty;
-
                 // If not currently editing the text, set the visible range to the whole text.
                 // The UpdateLabel method will then truncate it to the part that fits inside the Text area.
                 // We can't do this when text is being edited since it would discard the current scroll,
@@ -2091,9 +2085,6 @@ namespace MyUnityEngine.UI
 
             m_HasDoneFocusTransition = false;
             m_AllowInput = false;
-
-            if (m_Placeholder != null)
-                m_Placeholder.enabled = string.IsNullOrEmpty(m_Text);
 
             if (m_TextComponent != null && IsInteractable())
             {
