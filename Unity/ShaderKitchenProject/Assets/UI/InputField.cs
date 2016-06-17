@@ -24,16 +24,7 @@ namespace MyUnityEngine.UI {
     {
         // Setting the content type acts as a shortcut for setting a combination of InputType, CharacterValidation, LineType, and TouchScreenKeyboardType
         public enum ContentType {
-            Standard,
-            Autocorrected,
-            IntegerNumber,
-            DecimalNumber,
-            Alphanumeric,
-            Name,
-            EmailAddress,
-            Password,
-            Pin,
-            Custom
+            Standard
         }
 
         public enum InputType {
@@ -254,15 +245,10 @@ namespace MyUnityEngine.UI {
 
         public OnChangeEvent onValueChanged { get { return m_OnValueChanged; } set { SetPropertyUtility.SetClass(ref m_OnValueChanged, value); } }
 
-        public OnValidateInput onValidateInput { get { return m_OnValidateInput; } set { SetPropertyUtility.SetClass(ref m_OnValidateInput, value); } }
-
-        public int characterLimit { get { return m_CharacterLimit; } set { if (SetPropertyUtility.SetStruct(ref m_CharacterLimit, Math.Max(0, value))) UpdateLabel(); } }
-
         // Content Type related
 
         public ContentType contentType { get { return m_ContentType; } set { if (SetPropertyUtility.SetStruct(ref m_ContentType, value)) EnforceContentType(); } }
 
-        public LineType lineType { get { return m_LineType; } set { if (SetPropertyUtility.SetStruct(ref m_LineType, value)) SetToCustomIfContentTypeIsNot(ContentType.Standard, ContentType.Autocorrected); } }
 
         public InputType inputType { get { return m_InputType; } set { if (SetPropertyUtility.SetStruct(ref m_InputType, value)) SetToCustom(); } }
 
@@ -835,16 +821,16 @@ namespace MyUnityEngine.UI {
                     return EditState.Continue;
                 }
 
-                // Submit
-                case KeyCode.Return:
-                case KeyCode.KeypadEnter:
-                {
-                    if (lineType != LineType.MultiLineNewline)
-                    {
-                        return EditState.Finish;
-                    }
-                    break;
-                }
+                // // Submit
+                // case KeyCode.Return:
+                // case KeyCode.KeypadEnter:
+                // {
+                //     if (lineType != LineType.MultiLineNewline)
+                //     {
+                //         return EditState.Finish;
+                //     }
+                //     break;
+                // }
 
                 case KeyCode.Escape:
                 {
@@ -1758,62 +1744,62 @@ namespace MyUnityEngine.UI {
                     m_CharacterValidation = CharacterValidation.None;
                     return;
                 }
-                case ContentType.Autocorrected: {
-                    // Don't enforce line type for this content type.
-                    m_InputType = InputType.AutoCorrect;
-                    m_KeyboardType = TouchScreenKeyboardType.Default;
-                    m_CharacterValidation = CharacterValidation.None;
-                    return;
-                }
-                case ContentType.IntegerNumber: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Standard;
-                    m_KeyboardType = TouchScreenKeyboardType.NumberPad;
-                    m_CharacterValidation = CharacterValidation.Integer;
-                    return;
-                }
-                case ContentType.DecimalNumber: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Standard;
-                    m_KeyboardType = TouchScreenKeyboardType.NumbersAndPunctuation;
-                    m_CharacterValidation = CharacterValidation.Decimal;
-                    return;
-                }
-                case ContentType.Alphanumeric: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Standard;
-                    m_KeyboardType = TouchScreenKeyboardType.ASCIICapable;
-                    m_CharacterValidation = CharacterValidation.Alphanumeric;
-                    return;
-                }
-                case ContentType.Name: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Standard;
-                    m_KeyboardType = TouchScreenKeyboardType.Default;
-                    m_CharacterValidation = CharacterValidation.Name;
-                    return;
-                }
-                case ContentType.EmailAddress: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Standard;
-                    m_KeyboardType = TouchScreenKeyboardType.EmailAddress;
-                    m_CharacterValidation = CharacterValidation.EmailAddress;
-                    return;
-                }
-                case ContentType.Password: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Password;
-                    m_KeyboardType = TouchScreenKeyboardType.Default;
-                    m_CharacterValidation = CharacterValidation.None;
-                    return;
-                }
-                case ContentType.Pin: {
-                    m_LineType = LineType.SingleLine;
-                    m_InputType = InputType.Password;
-                    m_KeyboardType = TouchScreenKeyboardType.NumberPad;
-                    m_CharacterValidation = CharacterValidation.Integer;
-                    return;
-                }
+                // case ContentType.Autocorrected: {
+                //     // Don't enforce line type for this content type.
+                //     m_InputType = InputType.AutoCorrect;
+                //     m_KeyboardType = TouchScreenKeyboardType.Default;
+                //     m_CharacterValidation = CharacterValidation.None;
+                //     return;
+                // }
+                // case ContentType.IntegerNumber: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Standard;
+                //     m_KeyboardType = TouchScreenKeyboardType.NumberPad;
+                //     m_CharacterValidation = CharacterValidation.Integer;
+                //     return;
+                // }
+                // case ContentType.DecimalNumber: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Standard;
+                //     m_KeyboardType = TouchScreenKeyboardType.NumbersAndPunctuation;
+                //     m_CharacterValidation = CharacterValidation.Decimal;
+                //     return;
+                // }
+                // case ContentType.Alphanumeric: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Standard;
+                //     m_KeyboardType = TouchScreenKeyboardType.ASCIICapable;
+                //     m_CharacterValidation = CharacterValidation.Alphanumeric;
+                //     return;
+                // }
+                // case ContentType.Name: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Standard;
+                //     m_KeyboardType = TouchScreenKeyboardType.Default;
+                //     m_CharacterValidation = CharacterValidation.Name;
+                //     return;
+                // }
+                // case ContentType.EmailAddress: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Standard;
+                //     m_KeyboardType = TouchScreenKeyboardType.EmailAddress;
+                //     m_CharacterValidation = CharacterValidation.EmailAddress;
+                //     return;
+                // }
+                // case ContentType.Password: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Password;
+                //     m_KeyboardType = TouchScreenKeyboardType.Default;
+                //     m_CharacterValidation = CharacterValidation.None;
+                //     return;
+                // }
+                // case ContentType.Pin: {
+                //     m_LineType = LineType.SingleLine;
+                //     m_InputType = InputType.Password;
+                //     m_KeyboardType = TouchScreenKeyboardType.NumberPad;
+                //     m_CharacterValidation = CharacterValidation.Integer;
+                //     return;
+                // }
                 default:
                 {
                     // Includes Custom type. Nothing should be enforced.
@@ -1824,21 +1810,21 @@ namespace MyUnityEngine.UI {
 
         void SetToCustomIfContentTypeIsNot(params ContentType[] allowedContentTypes)
         {
-            if (contentType == ContentType.Custom) return;
+            // if (contentType == ContentType.Custom) return;
 
             for (int i = 0; i < allowedContentTypes.Length; i++) {
                 if (contentType == allowedContentTypes[i]) return;
             }
 
-            contentType = ContentType.Custom;
+            // contentType = ContentType.Custom;
         }
 
         void SetToCustom()
         {
-            if (contentType == ContentType.Custom)
-                return;
+            // if (contentType == ContentType.Custom)
+            //     return;
 
-            contentType = ContentType.Custom;
+            // contentType = ContentType.Custom;
         }
 
         protected override void DoStateTransition(SelectionState state, bool instant)
