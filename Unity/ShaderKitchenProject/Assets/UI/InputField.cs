@@ -287,7 +287,15 @@ namespace MyUnityEngine.UI {
         /// </summary>
 
         protected int caretPositionInternal { get { return m_CaretPosition + Input.compositionString.Length; } set { m_CaretPosition = value; ClampPos(ref m_CaretPosition); } }
-        protected int caretSelectPositionInternal { get { return m_CaretSelectPosition + Input.compositionString.Length; } set { m_CaretSelectPosition = value; ClampPos(ref m_CaretSelectPosition); } }
+        protected int caretSelectPositionInternal {
+            get {
+                return m_CaretSelectPosition + Input.compositionString.Length;
+            }
+            set {
+                m_CaretSelectPosition = value; ClampPos(ref m_CaretSelectPosition);
+            }
+        }
+
         private bool hasSelection { get { return caretPositionInternal != caretSelectPositionInternal; } }
 
 	#if UNITY_EDITOR
@@ -387,8 +395,7 @@ namespace MyUnityEngine.UI {
 			}
         }
 
-        protected override void OnDisable()
-        {
+        protected override void OnDisable() {
             // the coroutine will be terminated, so this will ensure it restarts when we are next activated
             m_BlinkCoroutine = null;
 
@@ -458,13 +465,12 @@ namespace MyUnityEngine.UI {
             }
         }
 
-        protected void OnFocus()
-        {
-            SelectAll();
+        protected void OnFocus() {
+            Debug.LogError("テキストにフォーカス変わった時の処理、なんかあれば。以前選んでた箇所に再度キャレットを表示とかしたいね〜〜 m_CaretSelectPosition:" + m_CaretSelectPosition);
+            // SelectAll();
         }
 
-        protected void SelectAll()
-        {
+        protected void SelectAll() {
             caretPositionInternal = m_VisibleContentsText.Length;
             caretSelectPositionInternal = 0;
         }
@@ -540,8 +546,6 @@ namespace MyUnityEngine.UI {
             }
 
             if (InPlaceEditing() || !isFocused) return;
-
-
 
 
             AssignPositioningIfNeeded();
@@ -932,17 +936,15 @@ namespace MyUnityEngine.UI {
             eventData.Use();
         }
 
-        private string GetSelectedString()
-        {
-            if (!hasSelection)
-                return "";
+        private string GetSelectedString() {
+            Debug.LogError("大変美味しそうな関数");
+            if (!hasSelection) return "";
 
             int startPos = caretPositionInternal;
             int endPos = caretSelectPositionInternal;
 
             // Ensure pos is always less then selPos to make the code simpler
-            if (startPos > endPos)
-            {
+            if (startPos > endPos) {
                 int temp = startPos;
                 startPos = endPos;
                 endPos = temp;
@@ -953,8 +955,7 @@ namespace MyUnityEngine.UI {
 
         private int FindtNextWordBegin()
         {
-            if (caretSelectPositionInternal + 1 >= m_VisibleContentsText.Length)
-                return m_VisibleContentsText.Length;
+            if (caretSelectPositionInternal + 1 >= m_VisibleContentsText.Length) return m_VisibleContentsText.Length;
 
             int spaceLoc = m_VisibleContentsText.IndexOfAny(kSeparators, caretSelectPositionInternal + 1);
 
@@ -1381,6 +1382,7 @@ namespace MyUnityEngine.UI {
         }
 
         private void AssignPositioningIfNeeded() {
+            // 一瞬しか発生しない。生成系なのかな。
             if (m_TextComponent != null && caretRectTrans != null &&
                 (caretRectTrans.localPosition != m_TextComponent.rectTransform.localPosition ||
                  caretRectTrans.localRotation != m_TextComponent.rectTransform.localRotation ||
@@ -1664,17 +1666,17 @@ namespace MyUnityEngine.UI {
             return (char)0;
         }
 
-        public void ActivateInputField()
-        {
+        public void ActivateInputField() {
             if (m_TextComponent == null || m_TextComponent.font == null || !IsActive() || !IsInteractable()) return;
 
             if (isFocused) {
                 if (m_Keyboard != null && !m_Keyboard.active) {
                     m_Keyboard.active = true;
-                    m_Keyboard.text = m_VisibleContentsText;// ここで元データを反映してるんで、ここで読めばいいんじゃーねーか的な。
+                    m_Keyboard.text = m_VisibleContentsText;
+                    Debug.LogError("テキスト反映してる");
                 }
             }
-
+            
             m_ShouldActivateNextUpdate = true;
         }
 
@@ -1712,10 +1714,9 @@ namespace MyUnityEngine.UI {
             ActivateInputField();
         }
 
-        public virtual void OnPointerClick(PointerEventData eventData)
-        {
-            if (eventData.button != PointerEventData.InputButton.Left)
-                return;
+        public virtual void OnPointerClick(PointerEventData eventData) {
+            Debug.LogError("おーークリックのたびに発生してる。");
+            if (eventData.button != PointerEventData.InputButton.Left) return;
 
             ActivateInputField();
         }
@@ -1748,76 +1749,65 @@ namespace MyUnityEngine.UI {
             base.OnDeselect(eventData);
         }
 
-        private void EnforceContentType()
-        {
-            switch (contentType)
-            {
-                case ContentType.Standard:
-                {
+        private void EnforceContentType() {
+            switch (contentType) {
+                case ContentType.Standard: {
                     // Don't enforce line type for this content type.
                     m_InputType = InputType.Standard;
                     m_KeyboardType = TouchScreenKeyboardType.Default;
                     m_CharacterValidation = CharacterValidation.None;
                     return;
                 }
-                case ContentType.Autocorrected:
-                {
+                case ContentType.Autocorrected: {
                     // Don't enforce line type for this content type.
                     m_InputType = InputType.AutoCorrect;
                     m_KeyboardType = TouchScreenKeyboardType.Default;
                     m_CharacterValidation = CharacterValidation.None;
                     return;
                 }
-                case ContentType.IntegerNumber:
-                {
+                case ContentType.IntegerNumber: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Standard;
                     m_KeyboardType = TouchScreenKeyboardType.NumberPad;
                     m_CharacterValidation = CharacterValidation.Integer;
                     return;
                 }
-                case ContentType.DecimalNumber:
-                {
+                case ContentType.DecimalNumber: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Standard;
                     m_KeyboardType = TouchScreenKeyboardType.NumbersAndPunctuation;
                     m_CharacterValidation = CharacterValidation.Decimal;
                     return;
                 }
-                case ContentType.Alphanumeric:
-                {
+                case ContentType.Alphanumeric: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Standard;
                     m_KeyboardType = TouchScreenKeyboardType.ASCIICapable;
                     m_CharacterValidation = CharacterValidation.Alphanumeric;
                     return;
                 }
-                case ContentType.Name:
-                {
+                case ContentType.Name: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Standard;
                     m_KeyboardType = TouchScreenKeyboardType.Default;
                     m_CharacterValidation = CharacterValidation.Name;
                     return;
                 }
-                case ContentType.EmailAddress:
-                {
+                case ContentType.EmailAddress: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Standard;
                     m_KeyboardType = TouchScreenKeyboardType.EmailAddress;
                     m_CharacterValidation = CharacterValidation.EmailAddress;
                     return;
                 }
-                case ContentType.Password:
-                {
+                case ContentType.Password: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Password;
                     m_KeyboardType = TouchScreenKeyboardType.Default;
                     m_CharacterValidation = CharacterValidation.None;
                     return;
                 }
-                case ContentType.Pin:
-                {
+                case ContentType.Pin: {
                     m_LineType = LineType.SingleLine;
                     m_InputType = InputType.Password;
                     m_KeyboardType = TouchScreenKeyboardType.NumberPad;
@@ -1834,12 +1824,11 @@ namespace MyUnityEngine.UI {
 
         void SetToCustomIfContentTypeIsNot(params ContentType[] allowedContentTypes)
         {
-            if (contentType == ContentType.Custom)
-                return;
+            if (contentType == ContentType.Custom) return;
 
-            for (int i = 0; i < allowedContentTypes.Length; i++)
-                if (contentType == allowedContentTypes[i])
-                    return;
+            for (int i = 0; i < allowedContentTypes.Length; i++) {
+                if (contentType == allowedContentTypes[i]) return;
+            }
 
             contentType = ContentType.Custom;
         }
@@ -1854,10 +1843,8 @@ namespace MyUnityEngine.UI {
 
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
-            if (m_HasDoneFocusTransition)
-                state = SelectionState.Highlighted;
-            else if (state == SelectionState.Pressed)
-                m_HasDoneFocusTransition = true;
+            if (m_HasDoneFocusTransition) state = SelectionState.Highlighted;
+            else if (state == SelectionState.Pressed) m_HasDoneFocusTransition = true;
 
             base.DoStateTransition(state, instant);
         }
@@ -1870,8 +1857,7 @@ namespace MyUnityEngine.UI
     {
         public static bool SetColor(ref Color currentValue, Color newValue)
         {
-            if (currentValue.r == newValue.r && currentValue.g == newValue.g && currentValue.b == newValue.b && currentValue.a == newValue.a)
-                return false;
+            if (currentValue.r == newValue.r && currentValue.g == newValue.g && currentValue.b == newValue.b && currentValue.a == newValue.a) return false;
 
             currentValue = newValue;
             return true;
@@ -1886,19 +1872,15 @@ namespace MyUnityEngine.UI
             return true;
         }
 
-        public static bool SetStruct<T>(ref T currentValue, T newValue) where T : struct
-        {
-            if (currentValue.Equals(newValue))
-                return false;
+        public static bool SetStruct<T>(ref T currentValue, T newValue) where T : struct {
+            if (currentValue.Equals(newValue)) return false;
 
             currentValue = newValue;
             return true;
         }
 
-        public static bool SetClass<T>(ref T currentValue, T newValue) where T : class
-        {
-            if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue)))
-                return false;
+        public static bool SetClass<T>(ref T currentValue, T newValue) where T : class {
+            if ((currentValue == null && newValue == null) || (currentValue != null && currentValue.Equals(newValue))) return false;
 
             currentValue = newValue;
             return true;
