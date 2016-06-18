@@ -39,6 +39,8 @@ namespace MyUnityEngine.UI {
         private Text m_TextComponent;
 
         [SerializeField] private Font m_font;
+        [SerializeField] private int m_fontSize;
+        [SerializeField] private float m_fontLineSpacing;
 
         /// <summary>
         /// Type of data expected by the input field.
@@ -259,11 +261,7 @@ namespace MyUnityEngine.UI {
 
         protected override void OnEnable() {// これがEditorでもよばれるんか、、！！
             base.OnEnable();
-            
-            // この時点で、m_VisibleContentsTextにはなんかが入ってる。ここで入れてもいい。というかここで入れるかな。
-            // やりたいことは、文字の描画にまぎれこんで、コントロール可能なボタンを埋め込むこと。
-            // そのためには、文字の描画周りに踏み込む必要がある。
-            
+
             m_DrawStart = 0;
             m_DrawEnd = m_VisibleContentsText.Length;
 
@@ -274,16 +272,14 @@ namespace MyUnityEngine.UI {
                 if (!Application.isPlaying) return;
             #endif
 
-            var baseRectTransform = this.GetComponent<RectTransform>();
-            
+            // generate new text object.
             var textObj = new GameObject("New text object");
             m_TextComponent = textObj.AddComponent<Text>();
             textObj.transform.SetParent(this.transform);
             textObj.transform.localScale = new Vector3(1,1,1);
-            
 
+            // set anchor.
             var rt = textObj.GetComponent<RectTransform>();
-            // rt.anchoredPosition = new Vector3(0,0,0);
             rt.anchorMin = new Vector2(0, 0);
             rt.anchorMax = new Vector2(1, 1);
             rt.pivot = new Vector2(0.5f, 0.5f);
@@ -291,6 +287,9 @@ namespace MyUnityEngine.UI {
             
             
             m_TextComponent.font = m_font;
+            m_TextComponent.fontSize = m_fontSize;
+            m_TextComponent.lineSpacing = m_fontLineSpacing;
+            
 
             if (m_TextComponent != null) {
                 m_TextComponent.RegisterDirtyVerticesCallback(MarkGeometryAsDirty);
