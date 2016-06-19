@@ -850,7 +850,7 @@ namespace UnidonUI.UI {
         /// <summary>
         /// Update the visual text Text.
         /// </summary>
-        protected void UpdateLabel() {// これが描画のコアか。
+        protected void UpdateLabel() {
             // TextGenerator.Populate invokes a callback that's called for anything
             // that needs to be updated when the data for that font has changed.
             // This makes all Text components that use that font update their vertices.
@@ -866,40 +866,23 @@ namespace UnidonUI.UI {
 
             m_PreventFontCallback = true;
 
-            var fullText = string.Empty;
-            // if (Input.compositionString.Length > 0) fullText = m_VisibleContentsText.Substring(0, m_CaretPosition) + Input.compositionString + m_VisibleContentsText.Substring(m_CaretPosition);
-            // else 
-            fullText = m_VisibleContentsText;
+            var processed = m_VisibleContentsText;
 
-            var processed = fullText;
+            // Determine what will actually fit into the given line
+            Vector2 extents = m_TextComponent.rectTransform.rect.size;
 
-            bool isEmpty = string.IsNullOrEmpty(fullText);
+            var settings = m_TextComponent.GetGenerationSettings(extents);
+            settings.generateOutOfBounds = true;
 
-            // If not currently editing the text, set the visible range to the whole text.
-            // The UpdateLabel method will then truncate it to the part that fits inside the Text area.
-            // We can't do this when text is being edited since it would discard the current scroll,
-            // which is defined by means of the m_DrawStart and m_DrawEnd indices.
-            if (!m_AllowInput) {
-                m_DrawStart = 0;
-                m_DrawEnd = m_VisibleContentsText.Length;
-            }
+            cachedInputTextGenerator.Populate(processed, settings);
 
-            if (!isEmpty) {
-                // Determine what will actually fit into the given line
-                Vector2 extents = m_TextComponent.rectTransform.rect.size;
+            SetDrawRangeToContainCaretPosition(caretSelectPositionInternal);
 
-                var settings = m_TextComponent.GetGenerationSettings(extents);
-                settings.generateOutOfBounds = true;
+            // ここで、表示内容を表示してるんだけど、外部からいじれそうにない。うーーーーんん、、、、、
+            processed = processed.Substring(m_DrawStart, Mathf.Min(m_DrawEnd, processed.Length) - m_DrawStart);
 
-                cachedInputTextGenerator.Populate(processed, settings);
+            SetCaretVisible();
 
-                SetDrawRangeToContainCaretPosition(caretSelectPositionInternal);
-
-                // ここで、表示内容を表示してるんだけど、外部からいじれそうにない。
-                processed = processed.Substring(m_DrawStart, Mathf.Min(m_DrawEnd, processed.Length) - m_DrawStart);
-
-                SetCaretVisible();
-            }
 
             m_TextComponent.text = processed;
 
@@ -976,11 +959,7 @@ namespace UnidonUI.UI {
                 m_DrawStart = GetLineStartPosition(cachedInputTextGenerator, startLine);
             }
         }
-
-        public void ForceLabelUpdate() {
-            UpdateLabel();
-        }
-
+        
         private void MarkGeometryAsDirty() {
             #if UNITY_EDITOR
             {
