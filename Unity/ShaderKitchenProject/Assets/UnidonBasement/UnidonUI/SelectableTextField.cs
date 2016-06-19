@@ -7,13 +7,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace MyUnityEngine.UI {
+namespace UnidonUI.UI {
     /// <summary>
     /// Editable text input field.
     /// </summary>
 
     
-    [AddComponentMenu("MyUI/SelectableTextField", 31)] public class SelectableTextField
+    [AddComponentMenu("UnidonUI/SelectableTextField", 31)] public class SelectableTextField
         : Selectable,
         IUpdateSelectedHandler,
         IBeginDragHandler,
@@ -1303,9 +1303,7 @@ namespace MyUnityEngine.UI {
             base.DoStateTransition(state, instant);
         }
     }
-}
 
-namespace MyUnityEngine.UI {
     internal static class SetPropertyUtility {
         public static bool SetColor(ref Color currentValue, Color newValue) {
             if (currentValue.r == newValue.r && currentValue.g == newValue.g && currentValue.b == newValue.b && currentValue.a == newValue.a) return false;
