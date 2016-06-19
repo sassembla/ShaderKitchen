@@ -156,10 +156,12 @@ Shader "ShaderKitchen/SK_Char"
 			// fragment Shaderで一つ一つ処理していきます
 
 			fixed rampUV = saturate(dot(_LightVector,normalDirection));
-			// これで、ライトのベクトルと、頂点の法線のベクトルの差を取り出しています（Lambert）<-この表記に、リンクつけたいですね。　記法考えるか。すっごく良い。
+			// これで、ライトのベクトルと、頂点の法線のベクトルの差を取り出しています（Lambert）
 
 			fixed4 toonColor = tex2D(_RampTex,float2(rampUV,rampUV))
-			// ここで取り出したベクトルの差分だけToonで設定したテクスチャ画像のピクセルを取り出しています。　*0.5+0.5は取り出したカラーが黒だと濃すぎるので薄めているだけです
+			// ここで取り出したベクトルの差分だけ
+			// Toonで設定したテクスチャ画像のピクセルを取り出しています。
+			// *0.5+0.5は取り出したカラーが黒だと濃すぎるので薄めているだけです
 
 			fixed RimValue = pow(1.0 - dot(i.normal , i.viewDir),_RimRange);
 			fixed4 RimColor = smoothstep(1.0 - _RimPower, 1.0 ,RimValue) * (c * _RimAlpha);
