@@ -366,9 +366,10 @@ namespace UnidonUI.UI {
                 return GUIUtility.systemCopyBuffer;
             }
             set {
+                // ignore html tags.
                 var rgx = new Regex(@"<(.*?)>");
                 var untagged = rgx.Replace(value, string.Empty);
-                Debug.LogError("untagged:" + untagged);
+
                 #if UNITY_WEBGL
                 {
                     WebViewFunction.CopyToClipboard(untagged);
