@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Unidon;
 using UnityEngine;
@@ -60,7 +61,7 @@ namespace UnidonUI.UI {
         [SerializeField] [FormerlySerializedAs("selectionColor")] private Color m_SelectionColor = new Color(168f / 255f, 206f / 255f, 255f / 255f, 192f / 255f);
 
         private string m_VisibleContentsText;
-        
+        private List<WebViewFunction.PointInfo> m_PointInfos;
         
         private float m_CaretBlinkRate = 0.85f;
 
@@ -209,8 +210,7 @@ namespace UnidonUI.UI {
 				Debug.LogError("selectionFocusPosition!"); 
 				return m_CaretSelectPosition + Input.compositionString.Length;
 			}
-            set
-            {
+            set {
                 if (Input.compositionString.Length != 0) return;
 
                 m_CaretSelectPosition = value;
@@ -221,8 +221,15 @@ namespace UnidonUI.UI {
         protected override void OnEnable() {
             base.OnEnable();
             
-            m_VisibleContentsText = WebViewFunction.MarkdownToRichText(textData.text);
-            
+            var pointInfosAndRichText = WebViewFunction.MarkdownToRichText(textData.text);
+            m_VisibleContentsText = pointInfosAndRichText.richText;
+            m_PointInfos = pointInfosAndRichText.points;
+            foreach (var item in m_PointInfos) {
+                Debug.LogError("item.id:" + item.id);
+                Debug.LogError("item.startLineCount:" + item.startLineCount);
+                Debug.LogError("item.endLineCount:" + item.endLineCount);
+            }
+
             m_DrawStart = 0;
             m_DrawEnd = m_VisibleContentsText.Length;
 
@@ -394,7 +401,16 @@ namespace UnidonUI.UI {
             入力周りの処理を行ってる。選択とか全部ここっぽい。
             文字の描画はここではない。
         */
+        int a;
         protected virtual void LateUpdate() {
+            // not yet work.
+            var d = Input.GetAxis("Mouse ScrollWheel");
+            if (d > 0f) {
+                
+            } else if (d < 0f) {
+
+            }
+
             // Only activate if we are not already activated.
             if (m_ShouldActivateNextUpdate) {
                 if (!isFocused) {
@@ -406,11 +422,11 @@ namespace UnidonUI.UI {
                 // Reset as we are already activated.
                 m_ShouldActivateNextUpdate = false;
             }
-
+            
             if (InPlaceEditing() || !isFocused) return;
 
-
             AssignPositioningIfNeeded();
+            
 
             if (m_Keyboard == null || !m_Keyboard.active) {
                 if (m_Keyboard != null) {
@@ -425,6 +441,9 @@ namespace UnidonUI.UI {
             // if (m_VisibleContentsText != val) {
             //     m_Keyboard.text = m_VisibleContentsText;
             // }
+
+            
+            
             
             if (m_Keyboard.done) {
                 if (m_Keyboard.wasCanceled) m_WasCanceled = true;
@@ -507,7 +526,7 @@ namespace UnidonUI.UI {
             
             Vector2 localMousePos;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(textComponent.rectTransform, eventData.position, eventData.pressEventCamera, out localMousePos);
-            caretSelectPositionInternal = GetCharacterIndexFromPosition(localMousePos) + m_DrawStart;// ここがドラッグでのスクロールの処理っぽいな。
+            caretSelectPositionInternal = GetCharacterIndexFromPosition(localMousePos) + m_DrawStart;
             MarkGeometryAsDirty();
 
             m_DragPositionOutOfBounds = !RectTransformUtility.RectangleContainsScreenPoint(textComponent.rectTransform, eventData.position, eventData.pressEventCamera);
@@ -533,16 +552,12 @@ namespace UnidonUI.UI {
             m_DragCoroutine = null;
         }
 
-        public virtual void OnEndDrag(PointerEventData eventData)
-        {
-            if (!MayDrag(eventData))
-                return;
-
+        public virtual void OnEndDrag(PointerEventData eventData) {
+            if (!MayDrag(eventData)) return;
             m_UpdateDrag = false;
         }
 
-        public override void OnPointerDown(PointerEventData eventData)
-        {
+        public override void OnPointerDown(PointerEventData eventData) {
             if (!MayDrag(eventData)) return;
 
             EventSystem.current.SetSelectedGameObject(gameObject, eventData);
@@ -810,7 +825,7 @@ namespace UnidonUI.UI {
             }
 
             int position = LineDownCharacterPosition(caretSelectPositionInternal, goToLastChar);
-
+            
             if (shift) caretSelectPositionInternal = position;
             else caretPositionInternal = caretSelectPositionInternal = position;
         }
@@ -832,10 +847,6 @@ namespace UnidonUI.UI {
             else caretSelectPositionInternal = caretPositionInternal = position;
         }
 
-		/*
-			m_CaretPositionに基づいて文字が移動してるんで、これがどう動くかを制御できればスクロールできそう。
-		*/
-
         /// <summary>
         /// Update the visual text Text.
         /// </summary>
@@ -856,8 +867,9 @@ namespace UnidonUI.UI {
             m_PreventFontCallback = true;
 
             var fullText = string.Empty;
-            if (Input.compositionString.Length > 0) fullText = m_VisibleContentsText.Substring(0, m_CaretPosition) + Input.compositionString + m_VisibleContentsText.Substring(m_CaretPosition);
-            else fullText = m_VisibleContentsText;
+            // if (Input.compositionString.Length > 0) fullText = m_VisibleContentsText.Substring(0, m_CaretPosition) + Input.compositionString + m_VisibleContentsText.Substring(m_CaretPosition);
+            // else 
+            fullText = m_VisibleContentsText;
 
             var processed = fullText;
 
@@ -883,6 +895,7 @@ namespace UnidonUI.UI {
 
                 SetDrawRangeToContainCaretPosition(caretSelectPositionInternal);
 
+                // ここで、表示内容を表示してるんだけど、外部からいじれそうにない。
                 processed = processed.Substring(m_DrawStart, Mathf.Min(m_DrawEnd, processed.Length) - m_DrawStart);
 
                 SetCaretVisible();
@@ -1031,7 +1044,6 @@ namespace UnidonUI.UI {
         }
 
         private void AssignPositioningIfNeeded() {
-            // 一瞬しか発生しない。生成系なのかな。
             if (m_TextComponent != null && caretRectTrans != null &&
                 (caretRectTrans.localPosition != m_TextComponent.rectTransform.localPosition ||
                  caretRectTrans.localRotation != m_TextComponent.rectTransform.localRotation ||
@@ -1250,9 +1262,11 @@ namespace UnidonUI.UI {
                 Input.imeCompositionMode = IMECompositionMode.On;
                 OnFocus();
             }
-
+            
             m_AllowInput = true;
+            
             m_OriginalText = m_VisibleContentsText;
+            
             m_WasCanceled = false;
             SetCaretVisible();
             UpdateLabel();

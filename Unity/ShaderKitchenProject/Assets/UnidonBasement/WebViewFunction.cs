@@ -9,14 +9,24 @@ namespace Unidon {
 	public static class WebViewFunction {
 		private static Markdown markdownSharp = new Markdown();
 		
-		public static string MarkdownToRichText (string markdown) {
+		public struct PointsAndRichText {
+			public string richText;
+			public List<PointInfo> points;
+
+			public PointsAndRichText (string richText, List<PointInfo> points) {
+				this.richText = richText;
+				this.points = points;
+			}
+		}
+
+		public static PointsAndRichText MarkdownToRichText (string markdown) {
 			var modifiedMarkdownAndPointInfos = GetOperatablePointInfos(markdown);
-			// この時点でポイントが見えてる。
+			
 			var html = markdownSharp.Transform(modifiedMarkdownAndPointInfos.modifiedMarkdown);
 			
-			var richtext = HTMLToRichText(html);
+			var richText = HTMLToRichText(html);
 			
-			return richtext;
+			return new PointsAndRichText(richText, modifiedMarkdownAndPointInfos.pointInfos);
 		}
 
 		private struct MarkdownAndPointInfos {
