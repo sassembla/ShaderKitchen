@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
-
+using System.Text.RegularExpressions;
+using Unidon;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -22,6 +23,8 @@ namespace MyUnityEngine.UI {
         ICanvasElement
     {
         
+        [SerializeField] public TextAsset textData;
+
         protected TouchScreenKeyboard m_Keyboard;
         static private readonly char[] kSeparators = { ' ', '.', ',', '\t', '\r', '\n' };
 
@@ -56,11 +59,7 @@ namespace MyUnityEngine.UI {
         
         [SerializeField] [FormerlySerializedAs("selectionColor")] private Color m_SelectionColor = new Color(168f / 255f, 206f / 255f, 255f / 255f, 192f / 255f);
 
-        private string m_VisibleContentsText = "a here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n"
-                 + "here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n"
-                 + "here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n"
-                 + "here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n"
-                 + "here comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\nhere comes\n";
+        private string m_VisibleContentsText;
         
         
         private float m_CaretBlinkRate = 0.85f;
@@ -221,7 +220,9 @@ namespace MyUnityEngine.UI {
 
         protected override void OnEnable() {
             base.OnEnable();
-
+            
+            m_VisibleContentsText = WebViewFunction.MarkdownToRichText(textData.text);
+            
             m_DrawStart = 0;
             m_DrawEnd = m_VisibleContentsText.Length;
 
@@ -240,10 +241,11 @@ namespace MyUnityEngine.UI {
 
             // set anchor.
             var rt = textObj.GetComponent<RectTransform>();
+            rt.anchoredPosition = new Vector2(0, 0);
             rt.anchorMin = new Vector2(0, 0);
             rt.anchorMax = new Vector2(1, 1);
             rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.sizeDelta = new Vector2(-10,-10);
+            rt.sizeDelta = new Vector2(-10, -10);
             
             // set font settings.
             m_TextComponent.font = m_font;
@@ -326,7 +328,6 @@ namespace MyUnityEngine.UI {
         }
 
         protected void OnFocus() {
-            Debug.LogError("テキストにフォーカス変わった時の処理、なんかあれば。以前選んでた箇所に再度キャレットを表示とかしたいね〜〜 m_CaretSelectPosition:" + m_CaretSelectPosition);
             // SelectAll();
         }
 
@@ -365,8 +366,18 @@ namespace MyUnityEngine.UI {
                 return GUIUtility.systemCopyBuffer;
             }
             set {
-                Debug.LogError("ここで、ブラウザ判別してコピーするJS実行すればよさげ");
-                GUIUtility.systemCopyBuffer = value;
+                var rgx = new Regex(@"<(.*?)>");
+                var untagged = rgx.Replace(value, string.Empty);
+                Debug.LogError("untagged:" + untagged);
+                #if UNITY_WEBGL
+                {
+                    WebViewFunction.CopyToClipboard(untagged);
+                }
+                #else
+                {
+                    GUIUtility.systemCopyBuffer = untagged;
+                }
+                #endif
             }
         }
 
@@ -565,27 +576,30 @@ namespace MyUnityEngine.UI {
             bool shift = (currentEventModifiers & EventModifiers.Shift) != 0;
             bool alt = (currentEventModifiers & EventModifiers.Alt) != 0;
             bool ctrlOnly = ctrl && !alt && !shift;
+            
+            // Debug.LogError("evt:" + evt);
 
-            switch (evt.keyCode) {
-                // Select All
-                case KeyCode.A: {
-                    if (ctrlOnly) {
-                        SelectAll();
-                        return;
+            // command
+            if (evt.character == '\0') {
+                switch (evt.keyCode) {
+                    // Select All
+                    case KeyCode.A: {
+                        if (ctrlOnly) {
+                            SelectAll();
+                            return;
+                        }
+                        break;
                     }
-                    break;
-                }
 
-                // Copy
-                case KeyCode.C: {
-                    if (ctrlOnly) {
+                    // Copy
+                    case KeyCode.C: {
                         clipboard = GetSelectedString();
                         return;
                     }
-                    break;
                 }
+            }
 
-
+            switch (evt.keyCode) {
                 /*
                     arrow key
                 */
@@ -1269,7 +1283,7 @@ namespace MyUnityEngine.UI {
                     m_Keyboard = null;
                 }
 
-                m_CaretPosition = m_CaretSelectPosition = 0;
+                // m_CaretPosition = m_CaretSelectPosition = 0;
 
                 Input.imeCompositionMode = IMECompositionMode.Auto;
             }

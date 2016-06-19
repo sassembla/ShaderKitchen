@@ -23,7 +23,7 @@ namespace Unidon {
 			}
 			
 			var assetTargetPath = FileController.PathCombine(Directory.GetParent(Application.dataPath).ToString(), "UnidonWeb/AssetBundles");
-			FileController.RemakeDirectory(assetTargetPath);// 変更があったシーンのみ作り直す、みたいなのに失敗するみたいだ。いまのところ必要。
+			// FileController.RemakeDirectory(assetTargetPath);// 変更があったシーンのみ作り直す、みたいなのに失敗するみたいだ。いまのところ必要。
 			BuildPipeline.BuildAssetBundles(assetTargetPath, 0, BuildTarget.WebGL);
 		}
 		
