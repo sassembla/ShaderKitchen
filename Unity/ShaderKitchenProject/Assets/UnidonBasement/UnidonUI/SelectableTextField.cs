@@ -406,9 +406,9 @@ namespace UnidonUI.UI {
             // not yet work.
             var d = Input.GetAxis("Mouse ScrollWheel");
             if (d > 0f) {
-                
+                Debug.LogError("up");
             } else if (d < 0f) {
-
+                Debug.LogError("down");
             }
 
             // Only activate if we are not already activated.
@@ -959,7 +959,7 @@ namespace UnidonUI.UI {
                 m_DrawStart = GetLineStartPosition(cachedInputTextGenerator, startLine);
             }
         }
-        
+
         private void MarkGeometryAsDirty() {
             #if UNITY_EDITOR
             {

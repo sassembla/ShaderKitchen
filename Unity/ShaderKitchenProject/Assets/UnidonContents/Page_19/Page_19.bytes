@@ -156,7 +156,8 @@ Shader "ShaderKitchen/SK_Char"
 			// fragment Shaderで一つ一つ処理していきます
 
 			fixed rampUV = saturate(dot(_LightVector,normalDirection));
-			// これで、ライトのベクトルと、頂点の法線のベクトルの差を取り出しています（Lambert）
+			// これで、ライトのベクトルと、
+			// 頂点の法線のベクトルの差を取り出しています（Lambert
 
 			fixed4 toonColor = tex2D(_RampTex,float2(rampUV,rampUV))
 			// ここで取り出したベクトルの差分だけ
@@ -168,7 +169,7 @@ Shader "ShaderKitchen/SK_Char"
 			// 頂点の法線ベクトルと、頂点からカメラへのベクトルの差分を取り（RimValue)
 			// 差分の値を元にRimの色を決めています（RimColor)
 			// i.viewDir.y += _RimAdjust;
-			// この位置行は、カメラへの法線ベクトルを上にずらすことで、Rimの影響を傾けています。
+			// この行は、カメラへの法線ベクトルを上にずらすことで、Rimの影響を傾けています。
 
 
 			fixed4 frag(v2f i) : SV_Target
