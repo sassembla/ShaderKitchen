@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP18_Spotlight"
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "ShaderDic/SMP18_Spotlight"
 {
      Properties 
      {
@@ -66,7 +68,7 @@
 				//float3 lightDirection = normalize(_WorldSpaceLightPos0.xyz); //ライトの角度 Unity Directional
 				
 				float4 PositionL =  _LP; 
-				float3 Ver2Light = _LP.xyz - mul(_Object2World,i.VerOrigin).xyz; //ピクセルからライトへの方向ベクトル
+				float3 Ver2Light = _LP.xyz - mul(unity_ObjectToWorld,i.VerOrigin).xyz; //ピクセルからライトへの方向ベクトル
 				float3 lightDirection = _LP.xyz - _LPDir.xyz; //ライトの角度
 								
 				float Distance = length(Ver2Light);

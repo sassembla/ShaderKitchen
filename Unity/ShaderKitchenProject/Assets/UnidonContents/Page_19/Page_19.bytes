@@ -1,11 +1,12 @@
 ##ShaderKitchen Shader
 ローコストで見栄えの良いよくある処理をまとめたシェーダーです<br>
-初歩的な計算が多いわりに、実用性もあるかと思います<br>
 <br>
 ソースを見ていきましょう<br>
 
 ```
+// [Prop:なんかアクション的なオプション指定の文字列 x N]->
 Shader "ShaderKitchen/SK_Char"
+// <-Prop
 {
 	Properties
 	{
@@ -17,7 +18,7 @@ Shader "ShaderKitchen/SK_Char"
 		_RampTex ("Toon", 2D) = "gray" {} //Toonの影の影響度
 		_RimPower("Rim Power", Range(0.02,8.0)) = 0.5 //Rimの強さ
 		_RimRange("Rim Range", Range(0.01,8.0)) = 2.0 //Rimの光の飛び具合
-		_RimAdjust("Rim Adjust", Range(0.0,-10.0)) = 0.0 //Rimの計算座標お補正
+		_RimAdjust("Rim Adjust", Range(0.0,-10.0)) = 0.0 //Rimの計算座標を補正
 		_RimAlpha("RimAlpha", Range(0.0,1.0)) = 1.0//Rimの薄さ
 		_LightVector("LightVec",Vector) = (0.0,0.0,0.0,0.0)//ライトの絶対座標
 		_normalBlend("HeadBlend",Range(0.0,1.0)) = 1.0//HeadVectorからの法線とモデルの法線のブレンド
@@ -25,6 +26,7 @@ Shader "ShaderKitchen/SK_Char"
 		_OutlineColor ("Outline Color", Color) = (0,0,0,1)//アウトラインの色
 		_Outline ("Outline width", Range (0.0, 0.03)) = .005//アウトラインの太さ
 	}
+	
 
 	SubShader
 	{
@@ -81,7 +83,7 @@ Shader "ShaderKitchen/SK_Char"
 			ENDCG
 		}
 
-		// <-outline
+		// <-Outline
 
 		// [Main:なんかアクション的なオプション指定の文字列 x N]->
 		// ここからメインの描画
@@ -209,3 +211,4 @@ Shader "ShaderKitchen/SK_Char"
 	Fallback "VertexLit"
 }
 ```
+ 

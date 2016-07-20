@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP15_ToonOutline"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP15_ToonOutline"
 {
 	Properties
 	{
@@ -96,7 +98,7 @@
 				o.pos = mul(UNITY_MATRIX_MVP,v.vertex);
 				o.texcoord = TRANSFORM_TEX(v.texcoord,_MainTex);
 
-				float3 normalDirection = normalize(mul(float4(v.normal,1.0),_World2Object)); 
+				float3 normalDirection = normalize(mul(float4(v.normal,1.0),unity_WorldToObject)); 
 				float3 lightDirection = normalize(_WorldSpaceLightPos0); 
 				o.rampUV.x = saturate(dot(lightDirection,normalDirection));//Lambertの計算　ライトの当たり具合を所得
 

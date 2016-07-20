@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP2.2_Lambert_frag"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP2.2_Lambert_frag"
 {
 	Properties
 	{
@@ -39,7 +41,7 @@
 			{
 				v2f o;
 
-				o.normal = mul(v.normal,_World2Object);//Get Vector Face Normal > _World2Object 現在のモデル行列の逆行列
+				o.normal = mul(v.normal,unity_WorldToObject);//Get Vector Face Normal > _World2Object 現在のモデル行列の逆行列
 				o.color = _WorldSpaceLightPos0; //Get Vector Light > _WorldSpaceLightPos0 UnityのScene上での一つ目のLightの位置情報
 
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);

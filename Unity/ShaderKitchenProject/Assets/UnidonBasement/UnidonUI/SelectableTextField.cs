@@ -91,7 +91,7 @@ namespace UnidonUI.UI {
         private bool m_HasDoneFocusTransition = false;
 
         
-        protected Mesh mesh {
+        protected Mesh DrawingMesh {
             get {
                 if (m_Mesh == null) m_Mesh = new Mesh();
                 return m_Mesh;
@@ -176,8 +176,7 @@ namespace UnidonUI.UI {
         /// </summary>
 
         public int caretPosition {
-            get {
-                Debug.LogError("キャレットの位置とか取得できそうなメソッド"); 
+            get {                
                 return m_CaretSelectPosition + Input.compositionString.Length; }
             set { selectionAnchorPosition = value; selectionFocusPosition = value; }
         }
@@ -207,7 +206,6 @@ namespace UnidonUI.UI {
         public int selectionFocusPosition {
 			
             get {
-				Debug.LogError("selectionFocusPosition!"); 
 				return m_CaretSelectPosition + Input.compositionString.Length;
 			}
             set {
@@ -224,11 +222,8 @@ namespace UnidonUI.UI {
             var pointInfosAndRichText = WebViewFunction.MarkdownToRichText(textData.text);
             m_VisibleContentsText = pointInfosAndRichText.richText;
             m_PointInfos = pointInfosAndRichText.points;
-            foreach (var item in m_PointInfos) {
-                Debug.LogError("item.id:" + item.id);
-                Debug.LogError("item.startLineCount:" + item.startLineCount);
-                Debug.LogError("item.endLineCount:" + item.endLineCount);
-            }
+            m_PointInfos.Reverse();
+
 
             m_DrawStart = 0;
             m_DrawEnd = m_VisibleContentsText.Length;
@@ -327,8 +322,7 @@ namespace UnidonUI.UI {
             if (!m_AllowInput) return;
 
             if (m_CaretBlinkRate > 0.0f) {
-                if (m_BlinkCoroutine == null)
-                    m_BlinkCoroutine = StartCoroutine(CaretBlink());
+                if (m_BlinkCoroutine == null) m_BlinkCoroutine = StartCoroutine(CaretBlink());
             } else {
                 m_CaretVisible = true;
             }
@@ -401,7 +395,6 @@ namespace UnidonUI.UI {
             入力周りの処理を行ってる。選択とか全部ここっぽい。
             文字の描画はここではない。
         */
-        int a;
         protected virtual void LateUpdate() {
             // not yet work.
             var d = Input.GetAxis("Mouse ScrollWheel");
@@ -409,6 +402,22 @@ namespace UnidonUI.UI {
                 Debug.LogError("up");
             } else if (d < 0f) {
                 Debug.LogError("down");
+            }
+
+            foreach (var item in m_PointInfos) {
+                if (item.id != "Prop") continue; 
+                // Debug.LogError("item.id:" + item.id);
+                // Debug.LogError("item.index:" + item.index);
+                var yStartPos = GetActualTextWritePixelPosByLineCount(item.index);
+
+
+                // Debug.LogError("item.count:" + item.count);
+                var yEndPos = GetActualTextWritePixelPosByLineCount(item.index + item.count);
+
+
+
+                Debug.LogError("yStartPos:" + yStartPos);// これdrawした時のピクセル位置だ。UI上の位置じゃない。
+                Debug.LogError("yEndPos:" + yEndPos);
             }
 
             // Only activate if we are not already activated.
@@ -451,7 +460,18 @@ namespace UnidonUI.UI {
             }
         }
 
+        /**
+            実際の描画ピクセル位置を返す。
+        */
+        private float GetActualTextWritePixelPosByLineCount (int lineCount) {
+            if (m_TextComponent == null) return 0;
+            var gen = m_TextComponent.cachedTextGenerator;
+            if (gen.lineCount == 0) return 0;
+            if (gen.lines.Count <= lineCount) return 0;
+            return gen.lines[lineCount].topY;
+        }
         
+
         private int GetUnclampedCharacterLineFromPosition(Vector2 pos, TextGenerator generator) {
             // transform y to local scale
             float y = pos.y * m_TextComponent.pixelsPerUnit;
@@ -891,7 +911,6 @@ namespace UnidonUI.UI {
         }
 
         private bool IsSelectionVisible() {
-			Debug.LogError("IsSelectionVisible");
             if (m_DrawStart > caretPositionInternal || m_DrawStart > caretSelectPositionInternal) return false;
             if (m_DrawEnd < caretPositionInternal || m_DrawEnd < caretSelectPositionInternal) return false;
             return true;
@@ -1018,8 +1037,8 @@ namespace UnidonUI.UI {
 
             if (m_CachedInputRenderer == null) return;
 
-            OnFillVBO(mesh);
-            m_CachedInputRenderer.SetMesh(mesh);
+            OnFillVBO(DrawingMesh);
+            m_CachedInputRenderer.SetMesh(DrawingMesh);
         }
 
         private void AssignPositioningIfNeeded() {
@@ -1072,13 +1091,18 @@ namespace UnidonUI.UI {
                 Vector2 roundingOffset = roundedRefPoint - refPoint + Vector2.Scale(extents, textAnchorPivot);
                 roundingOffset.x = roundingOffset.x - Mathf.Floor(0.5f + roundingOffset.x);
                 roundingOffset.y = roundingOffset.y - Mathf.Floor(0.5f + roundingOffset.y);
-                // このへんがルツボっぽいな。テキストの描画はわかんなくても、位置を指定して何か表示するのはできそう。
+                
                 if (!hasSelection) GenerateCaret(helper, roundingOffset);
                 else GenerateHightlight(helper, roundingOffset);
 
                 helper.FillMesh(vbo);
             }
         }
+
+        private Vector2 DisplayCharPos (int charPos) {
+            var cursorChar = m_TextComponent.cachedTextGenerator.characters[charPos];
+            return cursorChar.cursorPos;
+        } 
 
         private void GenerateCaret(VertexHelper vbo, Vector2 roundingOffset) {
             if (!m_CaretVisible) return;
@@ -1089,7 +1113,8 @@ namespace UnidonUI.UI {
 
             float width = m_CaretWidth;
             int adjustedPos = Mathf.Max(0, caretPositionInternal - m_DrawStart);
-            TextGenerator gen = m_TextComponent.cachedTextGenerator;
+            
+            var gen = m_TextComponent.cachedTextGenerator;
 
             if (gen == null) return;
             if (gen.lineCount == 0) return;
@@ -1097,15 +1122,11 @@ namespace UnidonUI.UI {
             Vector2 startPosition = Vector2.zero;
 
             // Calculate startPosition
-            if (adjustedPos < gen.characters.Count) {
-                UICharInfo cursorChar = gen.characters[adjustedPos];
-                startPosition.x = cursorChar.cursorPos.x;
-            }
+            if (adjustedPos < gen.characters.Count) startPosition.x = DisplayCharPos(adjustedPos).x;
             startPosition.x /= m_TextComponent.pixelsPerUnit;
 
             // TODO: Only clamp when Text uses horizontal word wrap.
-            if (startPosition.x > m_TextComponent.rectTransform.rect.xMax)
-                startPosition.x = m_TextComponent.rectTransform.rect.xMax;
+            if (startPosition.x > m_TextComponent.rectTransform.rect.xMax) startPosition.x = m_TextComponent.rectTransform.rect.xMax;
 
             int characterLine = DetermineCharacterLine(adjustedPos, gen);
             startPosition.y = gen.lines[characterLine].topY / m_TextComponent.pixelsPerUnit;
@@ -1113,11 +1134,11 @@ namespace UnidonUI.UI {
 
             for (int i = 0; i < m_CursorVerts.Length; i++) m_CursorVerts[i].color = caretColor;
 
-            m_CursorVerts[0].position = new Vector3(startPosition.x, startPosition.y - height, 0.0f);
+            m_CursorVerts[0].position = new Vector3(startPosition.x, startPosition.y - height, 0.0f);// 左下
             m_CursorVerts[1].position = new Vector3(startPosition.x + width, startPosition.y - height, 0.0f);
-            m_CursorVerts[2].position = new Vector3(startPosition.x + width, startPosition.y, 0.0f);
-            m_CursorVerts[3].position = new Vector3(startPosition.x, startPosition.y, 0.0f);
-
+            m_CursorVerts[2].position = new Vector3(startPosition.x + width, startPosition.y, 0.0f);//右上
+            m_CursorVerts[3].position = new Vector3(startPosition.x, startPosition.y, 0.0f);// 上端ぽい
+            
             if (roundingOffset != Vector2.zero) {
                 for (int i = 0; i < m_CursorVerts.Length; i++) {
                     UIVertex uiv = m_CursorVerts[i];

@@ -1,4 +1,6 @@
-﻿Shader "ShaderKitchen/SK_Char1"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderKitchen/SK_Char1"
 {
 	Properties
 	{
@@ -132,7 +134,7 @@
 //				fixed4 headnormal = i.headVec - _HeadVector;
 //				headnormal = ((1 - _normalBlend) * float4(i.normal,0.0)) + (_normalBlend * headnormal);
 //				fixed3 normalDirection = normalize(mul(headnormal,_World2Object).xyz);
-				fixed3 normalDirection = normalize(mul(float4(i.normal,0.0),_World2Object).xyz);
+				fixed3 normalDirection = normalize(mul(float4(i.normal,0.0),unity_WorldToObject).xyz);
 				fixed rampUV = saturate(dot(_LightVector,normalDirection));
 
 //				fixed4 toonColor = tex2D(_RampTex,float2(rampUV,rampUV))*0.5 + 0.5;

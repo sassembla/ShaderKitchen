@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP8_HL&RIM_shadow"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP8_HL&RIM_shadow"
 {
 	Properties
 	{
@@ -52,7 +54,7 @@
 			{
 				v2f o;
 				
-				o.normal = normalize(mul(v.normal,_World2Object));
+				o.normal = normalize(mul(v.normal,unity_WorldToObject));
 				o.color = normalize(_WorldSpaceLightPos0);
 
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);

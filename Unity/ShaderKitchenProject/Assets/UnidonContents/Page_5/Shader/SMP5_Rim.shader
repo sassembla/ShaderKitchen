@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP5_Rim"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP5_Rim"
 {
 	Properties
 	{
@@ -48,7 +50,7 @@
 			{
 				v2f o;
 
-				o.normal = normalize(mul(v.normal,_World2Object));//Get Vector Face Normal > _World2Object 現在のモデル行列の逆行列
+				o.normal = normalize(mul(v.normal,unity_WorldToObject));//Get Vector Face Normal > _World2Object 現在のモデル行列の逆行列
 				o.color = normalize(_WorldSpaceLightPos0); //Get Vector Light > _WorldSpaceLightPos0 UnityのScene上での一つ目のLightのベクトル情報（Posだけど位置ではじゃないです）
 
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);

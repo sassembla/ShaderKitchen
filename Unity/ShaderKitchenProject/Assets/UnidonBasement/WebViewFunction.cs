@@ -41,16 +41,16 @@ namespace Unidon {
 
 		public struct PointInfo {
 			public string id;
-			public int startLineCount;
-			public int endLineCount;
+			public int index;
+			public int count;
 			// この辺にオプションの種類を列挙したものと、そのオプションのパラメータとかを持ちたい。具体的には
 			// 押したら何か起きる、とか。
 			// 閉じる、とかもその一種でありたい。
 
-			public PointInfo (string id, int startLineCount, int endLineCount, string options) {
+			public PointInfo (string id, int index, int count, string options) {
 				this.id = id;
-				this.startLineCount = startLineCount;
-				this.endLineCount = endLineCount;
+				this.index = index;
+				this.count = count;
 				Debug.LogWarning("まだオプションどうしようか考えてない。");
 			}
 		}
@@ -88,10 +88,10 @@ namespace Unidon {
 					var identifier = startMatch.Groups[1].Value;
 					var options = startMatch.Groups[2].Value;
 					
-					identifierAndOptions.Add(new IdentifierAndOptions(identifier, options, i));
+					if (identifierAndOptions.Count == 0) identifierAndOptions.Add(new IdentifierAndOptions(identifier, options, i));
 					
 					/*
-						replace line.
+						replace target line of markdown to empty.
 					*/
 					lines[i] = string.Empty;
 				}
@@ -110,13 +110,13 @@ namespace Unidon {
 					*/
 					
 					var startLine = identifierAndOptions[index].startLine;
-					var endLine = i;
+					var count = i - startLine;
 					var options = identifierAndOptions[index].options;
 
-					pointInfos.Add(new PointInfo(identifier, startLine, endLine, options));
+					pointInfos.Add(new PointInfo(identifier, startLine, count, options));
 
 					/*
-						replace target line of markdown.
+						replace target line of markdown to empty.
 					*/
 					lines[i] = string.Empty;
 				}

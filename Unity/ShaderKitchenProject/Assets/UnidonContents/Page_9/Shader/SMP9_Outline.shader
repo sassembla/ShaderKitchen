@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP9_outline"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP9_outline"
 {
 	Properties
 	{
@@ -86,7 +88,7 @@
 			{
 				v2f o;
 				
-				float3 normalDirection = normalize(mul(v.normal,_World2Object));
+				float3 normalDirection = normalize(mul(v.normal,unity_WorldToObject));
 				float3 lightDirection = normalize(_WorldSpaceLightPos0);
 		
 				float3 HalfLambert = saturate(dot(lightDirection,normalDirection)) * 0.5 + 0.5;//Half-Lambert

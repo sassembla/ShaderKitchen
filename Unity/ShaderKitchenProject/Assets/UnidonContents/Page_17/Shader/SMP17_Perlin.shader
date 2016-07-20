@@ -1,4 +1,7 @@
-﻿Shader "ShaderDic/SMP17_Perlin"
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP17_Perlin"
 {
      Properties 
      {
@@ -101,8 +104,8 @@
 				v2f o;
 				
 				//tangent world
-				float4x4 modelMatrix = _Object2World;
-				float4x4 modelMatrixInverse = _World2Object;
+				float4x4 modelMatrix = unity_ObjectToWorld;
+				float4x4 modelMatrixInverse = unity_WorldToObject;
 				
 				o.TangentW = normalize(mul(modelMatrix,float4(v.tangent.xyz,0.0)).xyz);
 				o.NormalW = normalize(mul(float4(v.normal,0.0),modelMatrixInverse).xyz);

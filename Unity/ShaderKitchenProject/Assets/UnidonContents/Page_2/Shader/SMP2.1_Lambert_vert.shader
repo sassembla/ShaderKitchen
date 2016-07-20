@@ -1,4 +1,6 @@
-﻿Shader "ShaderDic/SMP2.1_Lambert_vert"
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+
+Shader "ShaderDic/SMP2.1_Lambert_vert"
 {
 	Properties
 	{
@@ -38,7 +40,7 @@
 			{
 				v2f o;
 				
-				float3 normalDirection = normalize(mul(v.normal,_World2Object)); //Get Vector Face Normal > _World2Object 現在のモデル行列の逆行列
+				float3 normalDirection = normalize(mul(v.normal,unity_WorldToObject)); //Get Vector Face Normal > _World2Object 現在のモデル行列の逆行列
 				float3 lightDirection = normalize(_WorldSpaceLightPos0); //Get Vector Light > _WorldSpaceLightPos0 UnityのScene上での一つ目のLightの位置情報
 		
 				float3 lambert = 1.0 * _LightColor0 * saturate(dot(lightDirection,normalDirection));// Get Lambert
