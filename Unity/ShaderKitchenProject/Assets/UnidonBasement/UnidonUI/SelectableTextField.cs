@@ -404,20 +404,17 @@ namespace UnidonUI.UI {
                 Debug.LogError("down");
             }
 
+            /*
+                各タグの位置を取り出す。今は上から一個目のタグに制限してある。
+                この位置に、タッチ可能なGUIを表示して、この範囲の文言をコントロールに使いたい。
+                どっか参照して表示するとか、描画の内容を変えるとか。
+            */
             foreach (var item in m_PointInfos) {
-                if (item.id != "Prop") continue; 
-                // Debug.LogError("item.id:" + item.id);
-                // Debug.LogError("item.index:" + item.index);
                 var yStartPos = GetActualTextWritePixelPosByLineCount(item.index);
-
-
-                // Debug.LogError("item.count:" + item.count);
+                
                 var yEndPos = GetActualTextWritePixelPosByLineCount(item.index + item.count);
-
-
-
-                Debug.LogError("yStartPos:" + yStartPos);// これdrawした時のピクセル位置だ。UI上の位置じゃない。
-                Debug.LogError("yEndPos:" + yEndPos);
+                
+                Debug.LogError("from line:" + item.index + " yStartPos:" + yStartPos + " to line:" + (item.index + item.count) + " yEndPos:" + yEndPos);
             }
 
             // Only activate if we are not already activated.
@@ -451,9 +448,6 @@ namespace UnidonUI.UI {
             //     m_Keyboard.text = m_VisibleContentsText;
             // }
 
-            
-            
-            
             if (m_Keyboard.done) {
                 if (m_Keyboard.wasCanceled) m_WasCanceled = true;
                 OnDeselect(null);
@@ -461,16 +455,17 @@ namespace UnidonUI.UI {
         }
 
         /**
-            実際の描画ピクセル位置を返す。
+            特定の行数の文字列の実際の描画ピクセルY位置を返す。
         */
         private float GetActualTextWritePixelPosByLineCount (int lineCount) {
             if (m_TextComponent == null) return 0;
             var gen = m_TextComponent.cachedTextGenerator;
             if (gen.lineCount == 0) return 0;
             if (gen.lines.Count <= lineCount) return 0;
+            var s = gen.lines[lineCount];
             return gen.lines[lineCount].topY;
         }
-        
+
 
         private int GetUnclampedCharacterLineFromPosition(Vector2 pos, TextGenerator generator) {
             // transform y to local scale
