@@ -391,6 +391,9 @@ namespace UnidonUI.UI {
         /// Update the text based on input.
         /// </summary>
         // TODO: Make LateUpdate a coroutine instead. Allows us to control the update to only be when the field is active.
+		private GameObject testObj;
+		private RectTransform testRect;
+
         /**
             入力周りの処理を行ってる。選択とか全部ここっぽい。
             文字の描画はここではない。
@@ -404,6 +407,17 @@ namespace UnidonUI.UI {
                 Debug.LogError("down");
             }
 
+			if(testObj != null){
+			} else {
+				testObj = new GameObject();
+				testRect = testObj.AddComponent<RectTransform>();
+				testObj.AddComponent<CanvasRenderer>();
+				testObj.AddComponent<Image>();
+				testObj.name = "samplePositionObject";
+				testObj.transform.parent = GameObject.Find("/Canvas").transform;
+				testRect.sizeDelta = new Vector2(20,20);//width height
+			}
+
             /*
                 各タグの位置を取り出す。今は上から一個目のタグに制限してある。
                 この位置に、タッチ可能なGUIを表示して、この範囲の文言をコントロールに使いたい。
@@ -412,9 +426,14 @@ namespace UnidonUI.UI {
             foreach (var item in m_PointInfos) {
                 var yStartPos = GetActualTextWritePixelPosByLineCount(item.index);
                 
-                var yEndPos = GetActualTextWritePixelPosByLineCount(item.index + item.count);
-                
-                Debug.LogError("from line:" + item.index + " yStartPos:" + yStartPos + " to line:" + (item.index + item.count) + " yEndPos:" + yEndPos);
+				var yEndPos = GetActualTextWritePixelPosByLineCount(item.index + item.count);
+
+				if(testObj != null){
+					testRect.position = new Vector3(0,yStartPos,0);
+				}
+
+				//Debug.LogError("from line:" + item.index + " yStartPos:" + yStartPos + " to line:" + (item.index + item.count) + " yEndPos:" + yEndPos + " SCHeight:" + Screen.height + " SCwide:" + Screen.width );
+				Debug.Log(testObj.transform.position);
             }
 
             // Only activate if we are not already activated.
