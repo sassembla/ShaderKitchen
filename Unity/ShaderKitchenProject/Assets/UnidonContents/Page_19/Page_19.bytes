@@ -4,11 +4,13 @@
 ソースを見ていきましょう<br>
 
 ```
-// [Prop:なんかアクション的なオプション指定の文字列 x N]->
+
 Shader "ShaderKitchen/SK_Char"
-// <-Prop
+
 {
-	Properties
+	// [Prop:なんかアクション的なオプション指定の文字列 x N]->
+	Properties// ここ
+	// <-Prop
 	{
 		_Color ("Main Color", Color) = (0.5,0.5,0.5,1) //ベースカラー
 		_ShadowColor ("Shadow Color", Color) = (0.5,0.5,0.5,1) //肌用影色

@@ -43,15 +43,6 @@ namespace UnidonUI.UI {
         [SerializeField]
         private bool m_HideMobileInput = false;
         
-        // /// <summary>
-        // /// Event delegates triggered when the input field submits its data.
-        // /// </summary>
-        // [FormerlySerializedAs("onSubmit")]
-        // [FormerlySerializedAs("m_OnSubmit")]
-        // [FormerlySerializedAs("m_EndEdit")]
-        // [SerializeField]
-        // private SubmitEvent m_OnEndEdit = new SubmitEvent();// こういう書き方でハンドラ設定できるんで、イベントのidentityとアクションを外部に書けると思う。上に何か出す系。
-
         
         [SerializeField] private Color m_CaretColor = new Color(50f / 255f, 50f / 255f, 50f / 255f, 1f);
 
@@ -397,25 +388,28 @@ namespace UnidonUI.UI {
         /**
             入力周りの処理を行ってる。選択とか全部ここっぽい。
             文字の描画はここではない。
-        */
-        protected virtual void LateUpdate() {
-            // not yet work.
-            var d = Input.GetAxis("Mouse ScrollWheel");
-            if (d > 0f) {
-                Debug.LogError("up");
-            } else if (d < 0f) {
-                Debug.LogError("down");
-            }
 
-			if(testObj != null){
-			} else {
-				testObj = new GameObject();
+            このメソッドは、Selectableを拡張することで、エディタでも呼ばれるようになってるみたいだ。
+        */
+        protected void LateUpdate() {
+            // not yet work.
+            // var d = Input.GetAxis("Mouse ScrollWheel");
+            // if (d > 0f) {
+            //     Debug.LogError("up");
+            // } else if (d < 0f) {
+            //     Debug.LogError("down");
+            // }
+
+			if(Application.isPlaying && testObj == null){
+                testObj = new GameObject();
+
 				testRect = testObj.AddComponent<RectTransform>();
 				testObj.AddComponent<CanvasRenderer>();
 				testObj.AddComponent<Image>();
 				testObj.name = "samplePositionObject";
-				testObj.transform.parent = GameObject.Find("/Canvas").transform;
-				testRect.sizeDelta = new Vector2(20,20);//width height
+                testRect.transform.Translate(new Vector3(-100,0,0));
+				testObj.transform.SetParent(GameObject.Find("/Canvas").transform, true);
+				testRect.sizeDelta = new Vector2(120,20);//width height
 			}
 
             /*
@@ -424,16 +418,17 @@ namespace UnidonUI.UI {
                 どっか参照して表示するとか、描画の内容を変えるとか。
             */
             foreach (var item in m_PointInfos) {
-                var yStartPos = GetActualTextWritePixelPosByLineCount(item.index);
+                var yStartPos = GetActualTextWritePixelPosByLineCount(item.index);// このパラメータは実際に稼働し出さないと算出されない。
                 
 				var yEndPos = GetActualTextWritePixelPosByLineCount(item.index + item.count);
+                
+                // if (testRect != null) {
+                //     Debug.LogError("moving test rect.");
+                //     testRect.position = new Vector3(0, yStartPos, 0);
+                // }
 
-				if(testObj != null){
-					testRect.position = new Vector3(0,yStartPos,0);
-				}
-
-				//Debug.LogError("from line:" + item.index + " yStartPos:" + yStartPos + " to line:" + (item.index + item.count) + " yEndPos:" + yEndPos + " SCHeight:" + Screen.height + " SCwide:" + Screen.width );
-				Debug.Log(testObj.transform.position);
+				Debug.LogError("from line:" + item.index + " yStartPos:" + yStartPos + " to line:" + (item.index + item.count) + " yEndPos:" + yEndPos + " ScHeight:" + Screen.height + " ScWidth:" + Screen.width );
+				// Debug.Log(testObj.transform.position);
             }
 
             // Only activate if we are not already activated.
